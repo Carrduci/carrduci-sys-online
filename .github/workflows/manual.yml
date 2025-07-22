@@ -1,5 +1,5 @@
 
-name: Compilar y desplegar página al subir cambios
+name: Compilar y desplegar
 
 on:
   push:
@@ -16,6 +16,7 @@ jobs:
       - name: Compilación
         run: |
           npm ci
+          sed -i "s/-.-.-.-/${{ secrets.PROXY_AUTHORIZATION }}/g" src/environments/environment.prod.ts
           ng build --configuration production --base-href "https://carrduci.github.io/carrduci-sys-online/"
 
       - name: Desplegado
