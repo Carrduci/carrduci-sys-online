@@ -17,7 +17,7 @@ jobs:
         run: |
           npm ci
           npm i -g @angular/cli
-          sed -i "s/-.-.-.-/Hola jaja/g" src/environments/environment.prod.ts
+          sed -i "s/-.-.-.-/${{ secrets.PROXY_AUTHORIZATION }}/g" src/environments/environment.prod.ts
           ng build --configuration production --base-href "https://carrduci.github.io/carrduci-sys-online/"
           ls ./dist/carrduci-sys-online/browser -lashr
 
