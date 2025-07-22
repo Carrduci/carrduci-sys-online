@@ -22,8 +22,8 @@ jobs:
 
       - name: Desplegado
         uses: JamesIves/github-pages-deploy-action@v4
-        with:
-          folder: dist/carrdyci-sys-online/browser
+        # with:
+        #   folder: dist/carrdyci-sys-online/browser
         env:
           PROXY_AUTHORIZATION: ${{ secrets.PROXY_AUTHORIZATION }}
           BRANCH: gh-pages
