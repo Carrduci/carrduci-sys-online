@@ -19,12 +19,12 @@ jobs:
           npm i -g @angular/cli
           sed -i "s/-.-.-.-/${{ secrets.PROXY_AUTHORIZATION }}/g" src/environments/environment.prod.ts
           ng build --configuration production --base-href "https://carrduci.github.io/carrduci-sys-online/"
-          ls ./dist/carrduci-sys-online -lashr
+          ls ./dist/carrduci-sys-online/browser -lashr
 
       - name: Desplegado
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: dist/carrduci-sys-online
+          folder: dist/carrduci-sys-online/browser
         env:
           PROXY_AUTHORIZATION: ${{ secrets.PROXY_AUTHORIZATION }}
           BRANCH: gh-pages
