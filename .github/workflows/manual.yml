@@ -20,7 +20,7 @@ jobs:
           ng build --configuration production --base-href "https://carrduci.github.io/carrduci-sys-online/"
 
       - name: Desplegado
-        uses: JavesIves/github-pages-deploy-action@v4
+        uses: JamesIves/github-pages-deploy-action@v4
         with:
           folder: dist/carrdyci-sys-online/browser
         env:
