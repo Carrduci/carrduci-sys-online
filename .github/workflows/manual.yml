@@ -19,7 +19,6 @@ jobs:
           npm i -g @angular/cli
           sed -i "s/-.-.-.-/${{ secrets.PROXY_AUTHORIZATION }}/g" src/environments/environment.prod.ts
           ng build --configuration production --base-href "https://carrduci.github.io/carrduci-sys-online/"
-          ls ./dist/carrduci-sys-online/browser -lashr
 
       - name: Desplegado
         uses: JamesIves/github-pages-deploy-action@v4
