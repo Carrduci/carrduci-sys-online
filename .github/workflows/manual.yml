@@ -1,0 +1,30 @@
+
+name: Compilar y desplegar página al subir cambios
+
+on:
+  push:
+    branches:
+      - gh-pages
+      
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@main
+
+      - name: Compilación
+        run: |
+          npm ci
+          ng build --configuration production --base-href "https://carrduci.github.io/carrduci-sys-online/"
+
+      - name: Desplegado
+        uses: JavesIves/github-pages-deploy-action@v4
+        with:
+          folder: dist/carrdyci-sys-online/browser
+        env:
+          PROXY_AUTHORIZATION: ${{ secrets.PROXY_AUTHORIZATION }}
+          BRANCH: gh-pages
+          FOLDER: dist
+
+      
