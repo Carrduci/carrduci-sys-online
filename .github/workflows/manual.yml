@@ -14,12 +14,10 @@ jobs:
         uses: actions/checkout@main
 
       - name: Compilación
-        env:
-          PROXY_AUTHORIZATION: ${{ secrets.PROXY_AUTHORIZATION }}
         run: |
           npm ci
           npm i -g @angular/cli
-          sed -i "s/-.-.-.-/$env:PROXY_AUTHORIZATION/g" src/environments/environment.prod.ts
+          sed -i "s/-.-.-.-/${{ secrets.PROXY_AUTHORIZATION }}/g" src/environments/environment.prod.ts
           ng build --configuration production --base-href "https://carrduci.github.io/carrduci-sys-online/"
 
       - name: Desplegado
