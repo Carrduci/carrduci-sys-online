@@ -19,5 +19,5 @@ import { environment } from '../environments/environment.prod';
 export class App {
   protected readonly title = signal('carrduci-sys-online');
   
-  prueba = environment.__;
+  prueba = environment.PROXY_AUTH;
 }

@@ -1,3 +1,3 @@
 export const environment = {
-    __: '-.-.-.-',
+    PROXY_AUTH: '-.-.-.-',
 }
