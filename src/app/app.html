@@ -1,6 +1,39 @@
-
-{{ prueba | json }}
-HOLA
-asdf
-<router-outlet />
-
+<div
+  class="
+    scrollbar-fix 
+    position-fixed 
+    h-[100vh] 
+    w-[100vw] 
+    overflow-auto 
+    m-0 
+    py-[5vh] 
+    bg-[url('./assets/fondo_botones.JPG')] 
+    bg-cover 
+    bg-no-repeat 
+    bg-center
+  "
+>
+  <div
+    class="
+      bottom-[-10] 
+      h-[90vh] 
+      overflow-auto 
+      rounded-lg 
+      w-[90vw] 
+      top-[50%] 
+      left-[50%] 
+      transform-[translate(-50%,-50%)]
+      absolute
+      right-[calc((90vw-90%)/2)]
+    "
+  >
+    <div
+      class="backdrop-blur-[20px] bg-black/50 rounded-lg p-2 mb-5 sticky top-0 z-2"
+    >
+      <h1>TÍTULO</h1>
+    </div>
+    <div class="backdrop-blur-[20px] bg-black/50 rounded-lg p-2">
+      <router-outlet />
+    </div>
+  </div>
+</div>
