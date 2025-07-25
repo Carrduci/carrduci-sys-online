@@ -18,7 +18,7 @@ export class FoliosBotonesService extends ServicioGenerico {
 
   ruta_base!: string
   
-  obtener_folio_vendedor_por_id(id: string) {
+  PUBLICO_obtener_folio_vendedor_por_id(id: string) {
     const URL = this.obtener_url([this.ruta_base, 'obtenerCotizacionPublica'], { id })
     return this.http.get(URL).pipe(
       map((respuesta: any) => {

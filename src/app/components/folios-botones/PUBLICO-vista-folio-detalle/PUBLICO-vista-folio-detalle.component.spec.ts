@@ -1,6 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { VistaFolioDetalleComponent } from './vista-folio-detalle.component';
+import { VistaFolioDetalleComponent } from './PUBLICO-vista-folio-detalle.component';
 
 describe('VistaFolioDetalleComponent', () => {
   let component: VistaFolioDetalleComponent;

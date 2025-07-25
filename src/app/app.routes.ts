@@ -5,12 +5,12 @@ export const routes: Routes = [
     { 
         path: '', 
         pathMatch: 'full',
-        redirectTo: 'cotizaciones'
+        redirectTo: 'publico'
     },
     {
-        path: 'cotizaciones',
-        loadComponent: () => import('./components/folios-botones/vista-folio-detalle/vista-folio-detalle.component')
-            .then(x => x.VistaFolioDetalleComponent)
+        path: 'publico',
+        loadChildren: () => import('./components/layouts/publico/layout-public.routes')
+            .then(x => x.routes)
 
     },
     { path: '*', redirectTo: '' },
