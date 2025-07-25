@@ -1,3 +1,29 @@
-<pre>
-    {{ folioVendedor() | json }}
-</pre>
+<ng-template
+    #TITULO_VISTA
+>
+    <div class="flex">
+        <div class="p-3">
+            <csys-logo-carrduci-svg
+                [height]="'150px'"
+                [width]="'150px'"
+            ></csys-logo-carrduci-svg>
+        </div>
+        <div>
+            <h2>
+                CARRDUCI - Cotización
+            </h2>
+            <div class="grid grid-cols-2 text-lg">
+                <div class="text-yellow-500">FOLIO: </div>
+                <div class="text-yellow-500 ps-3">{{ folio_vendedor()?.numeroDeFolio ?? 'N/A' }}</div>
+                <div class="text-yellow-500">CLIENTE: </div>
+                <div class="text-yellow-500 ps-3">{{ folio_vendedor()?.cliente?.nombre ?? 'N/A' }}</div>
+                <div>VENDEDOR: </div>
+                <div class="ps-3">{{ folio_vendedor()?.vendedor?.nombre ?? 'N/A' }}</div>
+                <div class="text-gray-400">FECHA: </div>
+                <div class="ps-3 text-gray-400">{{ folio_vendedor()?.createdAt | date : "MMMM dd, yyyy 'a las' hh:mm aa" }}</div>
+            </div>
+        </div>
+    </div>
+</ng-template>
+
+<pre>{{ folio_vendedor() | json }}</pre>

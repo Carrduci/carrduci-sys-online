@@ -1,30 +1,37 @@
-import { Component, OnInit, signal, Signal, WritableSignal } from '@angular/core';
+import { AfterViewInit, Component, OnInit, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
 import { FoliosBotonesService } from '../folios-botones.service';
-import { toSignal } from '@angular/core/rxjs-interop';
-import { JsonPipe } from '@angular/common';
-import { CardComponent } from '../../utiles/card/card.component';
+import { HeaderService } from '../../../services/utiles/header/header.service';
+import { ControlQueriesService } from '../../../services/utiles/control-queries/control-queries.service';
+import { LogoCarrduciSvgComponent } from '../../utiles/logo-carrduci-svg/logo-carrduci-svg.component';
+import { DatePipe, JsonPipe } from '@angular/common';
 
 @Component({
   selector: 'csys-vista-folio-detalle',
-  imports: [JsonPipe],
+  imports: [LogoCarrduciSvgComponent, DatePipe, JsonPipe],
   templateUrl: './vista-folio-detalle.component.html',
   styleUrl: './vista-folio-detalle.component.scss',
   standalone: true,
 })
-export class VistaFolioDetalleComponent  implements OnInit{
+export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
 
   // (o==================================================================o)
   //   #region INICIALIZACION
   // (o-----------------------------------------------------------\/-----o)
-
+  
   constructor(
-    private folioService: FoliosBotonesService
+    private folio_service: FoliosBotonesService,
+    private header_service: HeaderService,
+    private query_service: ControlQueriesService,
   ) {
 
   }
-  
+
   ngOnInit(): void {
-    this.obtenerFolio()
+    this.obtener_folio_vendedor()
+  }
+
+  ngAfterViewInit(): void {
+    this.header_service.set_componente(this.TITULO_VISTA)
   }
   
   // (o-----------------------------------------------------------/\-----o)
@@ -35,29 +42,32 @@ export class VistaFolioDetalleComponent  implements OnInit{
   //   #region VARIABLES
   // (o-----------------------------------------------------------\/-----o)
   
-  folioVendedor: WritableSignal<any> = signal(undefined)
+  @ViewChild('TITULO_VISTA') TITULO_VISTA!: TemplateRef<any>
+  
+  folio_vendedor: WritableSignal<any | undefined> = signal(undefined)
   
   // (o-----------------------------------------------------------/\-----o)
   //   #endregion VARIABLES
   // (o==================================================================o)
 
   // (o==================================================================o)
-  //   #region OBTENCION DE FOLIO
+  //   #region OBTENCION FOLIOS
   // (o-----------------------------------------------------------\/-----o)
   
-  obtenerFolio() {
-    this.folioService.obtener_folio_vendedor_por_id('688157915ce40cce6f17ff43')
-      .subscribe({
-        next: (folio) => {
-          this.folioVendedor.update((value) => {
-            return folio
-          })
-        }
-      })
+  obtener_folio_vendedor() {
+    const ID_FOLIO = this.query_service.query_actual().id
+    if (ID_FOLIO) {
+      this.folio_service.obtener_folio_vendedor_por_id(ID_FOLIO)
+        .subscribe({
+          next: (folio) => {
+            this.folio_vendedor.update((value) => folio)
+          }
+        })
+    }
   }
   
   // (o-----------------------------------------------------------/\-----o)
-  //   #endregion OBTENCION DE FOLIO
+  //   #endregion OBTENCION FOLIOS
   // (o==================================================================o)
 
 }

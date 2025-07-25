@@ -1,8 +1,11 @@
-import { APP_BASE_HREF, CommonModule, JsonPipe } from '@angular/common';
-import { Component, LOCALE_ID, signal } from '@angular/core';
+import { APP_BASE_HREF, CommonModule, JsonPipe, registerLocaleData } from '@angular/common';
+import { Component, LOCALE_ID, signal, TemplateRef, WritableSignal } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { environment } from '../environments/environment.prod';
+import { HeaderService } from './services/utiles/header/header.service';
+import localeMx from '@angular/common/locales/es-MX'
+registerLocaleData(localeMx)
 
 @Component({
   selector: 'app-root',
@@ -17,7 +20,13 @@ import { environment } from '../environments/environment.prod';
   ],
 })
 export class App {
-  protected readonly title = signal('carrduci-sys-online');
-  
-  prueba = environment.PROXY_AUTH;
+
+  constructor(
+    public header_service: HeaderService,
+  ) {
+    this.titulo_componente = this.header_service.get_componente()
+  }
+
+  titulo_componente?: WritableSignal<TemplateRef<any> | undefined>
+  protected readonly titulo_string = signal('CARRDUCIsys ONLINE');
 }
