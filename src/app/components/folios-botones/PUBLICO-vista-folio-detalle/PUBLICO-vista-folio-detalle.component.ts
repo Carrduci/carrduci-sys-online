@@ -4,6 +4,7 @@ import { HeaderService } from '../../../services/utiles/header/header.service';
 import { ControlQueriesService } from '../../../services/utiles/control-queries/control-queries.service';
 import { LogoCarrduciSvgComponent } from '../../utiles/logo-carrduci-svg/logo-carrduci-svg.component';
 import { DatePipe, JsonPipe } from '@angular/common';
+import { FolioVendedorPublicoRecibir } from '../folio-vendedor-public.model';
 
 @Component({
   selector: 'csys-PUBLICO-vista-folio-detalle',
@@ -44,7 +45,7 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
   
   @ViewChild('TITULO_VISTA') TITULO_VISTA!: TemplateRef<any>
   
-  folio_vendedor: WritableSignal<any | undefined> = signal(undefined)
+  folio_vendedor: WritableSignal<FolioVendedorPublicoRecibir | undefined> = signal(undefined)
   
   // (o-----------------------------------------------------------/\-----o)
   //   #endregion VARIABLES
