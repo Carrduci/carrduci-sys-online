@@ -44,6 +44,12 @@ export class ControlQueriesService {
    */
   queries = {
     id: this.preparar_query<QUERY_PARAMS_GENERAL['id']>('id'),
+    pagination: this.preparar_query<QUERY_PARAMS_GENERAL['pagination']>('pagination'),
+    global_search: this.preparar_query<QUERY_PARAMS_GENERAL['global_search']>('global_search'),
+    term_search: this.preparar_query<QUERY_PARAMS_GENERAL['term_search']>('term_search'),
+    filters: <T>() => this.preparar_query<T>('filters'),
+    form_object_sequence: this.preparar_query<QUERY_PARAMS_GENERAL['form_object_sequence']>('form_object_sequence'),
+    form_mode: this.preparar_query<QUERY_PARAMS_GENERAL['form_mode']>('form_mode'),    
   }
 
   private accion<T>(nombre: string) {
@@ -96,5 +102,11 @@ export class ControlQueriesService {
 }
 
 export interface QUERY_PARAMS_GENERAL {
+  pagination?: Pagination,
+  filters?: any
+  global_search?: string,
+  term_search?: string,
+  form_object_sequence?: number,
+  form_mode?: 'detail' | 'edit' | 'create'
   id?: string
 }
