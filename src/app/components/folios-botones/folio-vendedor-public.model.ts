@@ -9,7 +9,7 @@ export class FolioVendedorPublicoRecibir {
   createdAt?: Date
   updatedAt?: Date
   numeroDeFolio?: number
-  folioLineas?: {
+  folioLineas: {
       modeloCompleto: {
         nombreCompleto: string
         sku: string

@@ -475,4 +475,22 @@ export class UtilidadesService {
         }
         return formed_range
     }
+
+    obtenerNivelDeDescendenciaEntreNodosHTML(
+		parent: HTMLElement,
+		child: HTMLElement
+	): number {
+		let current = child
+		let level = 0
+
+		while (current && current !== parent) {
+			current = current.parentElement as HTMLElement
+			// console.log('CURRENT: ', current)
+			level++
+
+			if (!current) return -1
+		}
+
+		return level
+	}
 }

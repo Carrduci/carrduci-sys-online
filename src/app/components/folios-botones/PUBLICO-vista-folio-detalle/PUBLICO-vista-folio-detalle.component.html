@@ -26,4 +26,8 @@
     </div>
 </ng-template>
 
-<pre>{{ folio_vendedor() | json }}</pre>
+<app-tabla-generica
+    [datos_tabla]="datos_tabla_generica"
+    [documentos]="folio_vendedor()?.folioLineas ?? []"
+    [track_field]="'modeloCompleto'"
+></app-tabla-generica>

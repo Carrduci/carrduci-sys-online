@@ -1,9 +1,9 @@
 <div
   class="
-    tw:position-fixed 
     tw:h-[100vh] 
     tw:w-[100vw] 
-    tw:overflow-auto 
+    tw:overflow-y-auto
+    tw:overflow-x-hidden
     tw:m-0 
     tw:py-[5vh] 
     tw:bg-[url('./assets/fondo_botones.JPG')] 
@@ -20,6 +20,7 @@
       tw:left-[50%] 
       tw:transform-[translate(-50%,-50%)] 
       tw:absolute right-[calc((90vw-90%)/2)]
+      tw:overflow-x-hidden
     "
   >
     <div
@@ -32,7 +33,7 @@
         tw:sticky 
         tw:top-0 
         tw:z-2 
-        tw:border-b-2
+        tw:border-b-1
       "
     >
       @if (titulo_componente) { @if (titulo_componente()) {

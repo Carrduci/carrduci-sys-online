@@ -85,11 +85,11 @@ declare global {
     current_page: number;
     page_count: number;
     element_count: number;
-    sorting_fields: {
+    sorting_fields?: {
       [type: string]: {
-        field: string;
-        title: string;
-        order: 1 | -1;
+        field?: string;
+        title?: string;
+        order?: 1 | -1;
       };
     };
   };

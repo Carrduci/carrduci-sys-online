@@ -1,6 +1,5 @@
 import { CommonModule } from '@angular/common';
 import {
-    ChangeDetectorRef,
     Component,
     computed,
     effect,
@@ -21,6 +20,8 @@ import { PipeDinamicoPipe } from '../../../../pipes/pipe-dinamico/pipe-dinamico.
 import { DeteccionViewportService } from '../../../../services/ux/deteccion-viewport/deteccion-viewport.service';
 import { UtilidadesService } from '../../../../services/ux/utilidades/utilidades.service';
 import { ControlQueriesService } from '../../../../services/ux/control-queries/control-queries.service';
+import { GetfieldPipe } from '../../../../pipes/getfield/getfield.pipe';
+import { FlotanteGenericoDirective } from '../../../../directives/utiles/varios/flotante-generico/flotante-generico.directive';
 
 @Component({
     selector: 'app-tabla-generica',
@@ -30,6 +31,8 @@ import { ControlQueriesService } from '../../../../services/ux/control-queries/c
         CommonModule,
         PipeDinamicoPipe,
         PaginadorGenericoComponent,
+        GetfieldPipe,
+        FlotanteGenericoDirective,
     ],
     templateUrl: './tabla-generica.component.html',
     styleUrl: './tabla-generica.component.scss',
@@ -105,6 +108,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
         }));
     }
     @Input('documentos') documentos: any[] = [];
+    @Input('track_field') track_field: string = '_id'
     @Output('paginacion')
     emisor_paginacion: EventEmitter<Pagination> = new EventEmitter();
     @Output('click_fila')
@@ -137,11 +141,13 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
 
     ordenar_ascendente(column_field: string, nombre_real: string) {
         this.ordenes_columnas.update((value: Pagination['sorting_fields']) => {
-            value[column_field] = {
-                field: column_field,
-                title: nombre_real,
-                order: -1,
-            };
+            if (value) {
+                value[column_field] = {
+                    field: column_field,
+                    title: nombre_real,
+                    order: -1,
+                };
+            }
             return value;
         });
         this.emitir_ordenamiento();
@@ -149,11 +155,13 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
 
     ordenar_descendente(column_field: string, nombre_real: string) {
         this.ordenes_columnas.update((value: Pagination['sorting_fields']) => {
-            value[column_field] = {
-                field: column_field,
-                title: nombre_real,
-                order: 1,
-            };
+            if (value) {
+                value[column_field] = {
+                    field: column_field,
+                    title: nombre_real,
+                    order: 1,
+                };
+            }
             return value;
         });
         this.emitir_ordenamiento();
@@ -161,7 +169,9 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
 
     no_ordenar(column_field: string) {
         this.ordenes_columnas.update((value: Pagination['sorting_fields']) => {
-            delete value[column_field];
+            if (value) {
+                delete value[column_field];
+            }
             return value;
         });
         this.emitir_ordenamiento();

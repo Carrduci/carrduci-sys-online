@@ -234,7 +234,6 @@ export class BootstrapDropdownDirective implements OnInit, OnDestroy {
     this.resize_observer.observe(<HTMLElement>this.dropdown)
     
     this.renderer.addClass(this.dropdown, 'dropdown-menu')
-    this.renderer.addClass(this.dropdown, 'dropdown-personalizado')
     this.renderer.setStyle(this.dropdown, 'max-width', '15vw')
     this.renderer.setStyle(this.dropdown, 'word-wrap', 'normal')
     this.renderer.setStyle(this.dropdown, 'overflow', 'visible')
@@ -441,6 +440,7 @@ export class BootstrapDropdownDirective implements OnInit, OnDestroy {
     }
     const alturaFLotante = this.dropdown?.offsetHeight ?? 0
     const anchoFlotante = this.dropdown?.offsetWidth ?? 0
+    console.log(posicionHost, scrollYAxis, alturaFLotante)
     if (!noOcultar) {
       this.renderer.setStyle(this.dropdown, 'display', 'none')
       this.renderer.removeStyle(this.dropdown, 'visibility')
@@ -470,19 +470,19 @@ export class BootstrapDropdownDirective implements OnInit, OnDestroy {
           break;
       }
     }
-    if (!!this.dropdown) {
-        try {
-          this.renderer.setStyle(this.dropdown, 'top', `${this.top_dropdown}px`)
-          this.renderer.setStyle(this.dropdown, 'left', `${this.left_dropdown}px`)
-          if (this.definir_scroll_maximo_automatico) {
-            this.renderer.setStyle(this.dropdown, 'max-height', `${alturaMaximaScroll}px`)
-            this.renderer.removeStyle(this.dropdown, 'overflow')
-            this.renderer.setStyle(this.dropdown, 'overflow-y', `auto`)
-            this.renderer.setStyle(this.dropdown, 'overflow-x', `hidden`)
-          }
-        } catch (err) {
-        }
+    // if (!!this.dropdown) {
+    try {
+      this.renderer.setStyle(this.dropdown, 'top', `${this.top_dropdown}`)
+      this.renderer.setStyle(this.dropdown, 'left', `${this.left_dropdown}`)
+      if (this.definir_scroll_maximo_automatico) {
+        this.renderer.setStyle(this.dropdown, 'max-height', `${alturaMaximaScroll}px`)
+        this.renderer.removeStyle(this.dropdown, 'overflow')
+        this.renderer.setStyle(this.dropdown, 'overflow-y', `auto`)
+        this.renderer.setStyle(this.dropdown, 'overflow-x', `hidden`)
+      }
+    } catch (err) {
     }
+    // }
     this.detectar_cambios()
   }
 

@@ -4,7 +4,7 @@
 
 @if (!!datos_tabla() && documentos.length > 0) { 
     @if (datos_tabla().show_search_bar) {
-        <div class="w-100 mb-2 p-2 bg-dark-subtle rounded">BUSCADOR</div>
+        <div class="w-100 mb-2 p-2 bg-black rounded">BUSCADOR</div>
     }
     <div class="row mb-2">
         <div class="col-12 col-lg-7 overflow-etiquetas flex-nowrap">
@@ -13,8 +13,8 @@
                 <span
                     class="badge me-1 mb-1 border-hover border-hover-light"
                     [ngClass]="{
-                        'text-bg-warning': sorted_field.value?.order === 1,
-                        'text-bg-light': sorted_field.value?.order === -1
+                        'text-bg-warning': sorted_field.value.order === 1,
+                        'text-bg-light': sorted_field.value.order === -1
                     }"
                     tabindex="0"
                     (click)="no_ordenar(sorted_field.key)"
@@ -22,11 +22,11 @@
                     bs-tooltip="
                             <div class='p-1'>
                                 Ordenado <strong class='{{
-                                    sorted_field.value?.order === 1
+                                    sorted_field.value.order === 1
                                         ? 'text-warning'
                                         : 'text-light'
                                 }}'>{{
-                                    sorted_field.value?.order === 1
+                                    sorted_field.value.order === 1
                                         ? 'descendente'
                                         : 'ascendente'
                                 }}</strong>
@@ -42,7 +42,7 @@
                     "
                 >
                     {{ sorted_field.value.title }}
-                    @switch (sorted_field.value?.order) { @case (-1) {
+                    @switch (sorted_field.value.order) { @case (-1) {
                     <span class="">
                         <i class="bi bi-arrow-up"></i>
                     </span>
@@ -143,7 +143,7 @@
         <thead>
             <tr>
                 @if (datos_tabla().show_index_column) {
-                    <th scope="col" class="bg-dark-subtle">
+                    <th scope="col" class="bg-black">
                         <button
                             type="menu"
                             class="btn pt-0 pb-0 ps-1 pe-1 bg-hover-primary shadow-hover-lg rounded"
@@ -157,31 +157,29 @@
                 @switch (!!datos_tabla().show_sorters) {
                     @case (true) {
                         @for (columna of columnas_computed(); track columna.column_title) {
-                            <th scope="col" class="bg-dark-subtle">
+                            <th scope="col" class="bg-black">
                                 <button
                                     [id]="'_' + columna.content.field"
                                     type="menu"
                                     class="btn pt-0 pb-0 ps-1 pe-1 shadow-hover-lg rounded {{
-                                        !!ordenes_columnas()[columna.content.field]?.order
+                                        !!ordenes_columnas()?.[columna.content.field]?.order
                                             ? 'text-hover-dark'
                                             : ''
                                     }}"
                                     [ngClass]="{
                                         'border border-light-subtle bg-hover-light':
-                                            ordenes_columnas()[columna.content.field]
+                                            ordenes_columnas()?.[columna.content.field]
                                                 ?.order === -1,
                                         'border border-warning-subtle bg-hover-warning':
-                                            ordenes_columnas()[columna.content.field]
+                                            ordenes_columnas()?.[columna.content.field]
                                                 ?.order === 1,
                                         'bg-hover-primary text-hover-light':
-                                            !ordenes_columnas()[columna.content.field]
+                                            !ordenes_columnas()?.[columna.content.field]
                                                 ?.order
                                     }"
-                                    bs-dropdown
-                                    [posicion_dropdown]="'down'"
-                                    [mostrar_dropdown_con_click]="true"
-                                    [solo_ocultar_con_boton]="true"
-                                    [contexto_plantilla]="{
+                                    flotante-generico
+                                    [posicion]="'bottom'"
+                                    [contextoTemplate]="{
                                         tooltip:
                                             columna.header_tooltip?.content
                                             | pipe_dinamico
@@ -190,41 +188,42 @@
                                         fieldColumna: columna.content.field,
                                         tituloColumna: columna.column_title
                                     }"
-                                    [plantilla]="opcionesDropdown"
-                                    [ocultar_dropdown_con_click_interno]="true"
-                                    [clases_dropdown]="
-                                        ordenes_columnas()[columna.content.field]
+                                    [template]="opcionesDropdown"
+                                    [clasesRecuadro]="
+                                        ordenes_columnas()?.[columna.content.field]
                                             ?.order === -1
-                                            ? 'border-hover-light-subtle'
-                                            : ordenes_columnas()[columna.content.field]
+                                            ? 'border-hover-light'
+                                            : ordenes_columnas()?.[columna.content.field]
                                                 ?.order === 1
-                                            ? 'border-hover-warning-subtle'
-                                            : !ordenes_columnas()[columna.content.field]
+                                            ? 'border-hover-warning'
+                                            : !ordenes_columnas()?.[columna.content.field]
                                                 ?.order
-                                            ? 'border-hover-primary-subtle'
-                                            : 'border-hover-primary-subtle'
+                                            ? 'border-hover-primary'
+                                            : 'border-hover-primary'
                                     "
-                                    tabindex="0"
+                                    [tabIndex]="0"
+                                    [mostrarConClick]="true"
+                                    [ocultar_con_click_interno]="true"
                                 >
                                     {{ columna.column_title }}
                                     <span
                                         class="pe-1 ps-1 {{
-                                            !!ordenes_columnas()[columna.content.field]
+                                            !!ordenes_columnas()?.[columna.content.field]
                                                 ?.order
-                                                ? ' bg-dark-subtle rounded'
+                                                ? ' bg-black rounded'
                                                 : ''
                                         }}"
                                         [ngClass]="{
                                             'text-warning-emphasis':
-                                                ordenes_columnas()[columna.content.field]
+                                                ordenes_columnas()?.[columna.content.field]
                                                     ?.order === 1,
                                             'text-light-emphasis':
-                                                ordenes_columnas()[columna.content.field]
+                                                ordenes_columnas()?.[columna.content.field]
                                                     ?.order === -1
                                         }"
                                     >
                                         @switch
-                                        (ordenes_columnas()[columna.content.field]?.order)
+                                        (ordenes_columnas()?.[columna.content.field]?.order)
                                         { @case (-1) {
                                         <i class="bi bi-arrow-up"></i>
                                         } @case (1) {
@@ -239,7 +238,7 @@
                     }
                     @case (false) {
                         @for (columna of columnas_computed(); track columna.column_title) {
-                            <th scope="col" class="bg-dark-subtle">
+                            <th scope="col" class="bg-black">
                                 {{ columna.column_title }}
                             </th>
                         }
@@ -253,9 +252,10 @@
             </tr>
         </thead>
         <tbody>
-            @for (doc_fila of documentos; track doc_fila._id; let
+            @for (doc_fila of documentos; track doc_fila[track_field]; let
             indice = $index) {
             <tr 
+                class="bg-transparent"
                 tabindex="0" 
                 (click)="emisor_click_fila.emit({
                     row_index: indice,
@@ -267,10 +267,10 @@
                 })"
             >
                 @if (datos_tabla().show_index_column) {
-                <th scope="row" class="">{{ indice + 1 }}</th>
+                <th scope="row" class="bg-transparent">{{ indice + 1 }}</th>
                 } @for (columna of datos_tabla().columns; track columna.column_title)
                 {
-                <td class="">{{ doc_fila[columna.content.field] }}</td>
+                <td class="bg-transparent">{{ doc_fila | getfield: columna.content.field | pipe_dinamico: columna.content.pipe : columna.content.pipe_args ?? [] }}</td>
                 }
             </tr>
             }
@@ -296,7 +296,7 @@
         class="d-flex w-100 justify-content-between dropdown-item border-hover border-hover-primary rounded text-truncate"
         [ngClass]="{
             'border border-primary-subtle':
-                !ordenes_columnas()[fieldColumna]?.order
+                !(ordenes_columnas()?.[fieldColumna]?.order)
         }"
         (click)="no_ordenar(fieldColumna)"
         (keydown.enter)="no_ordenar(fieldColumna)"
@@ -311,7 +311,7 @@
         class="d-flex w-100 justify-content-between dropdown-item border-hover border-hover-light rounded text-truncate"
         [ngClass]="{
             'border border-light-subtle':
-                ordenes_columnas()[fieldColumna]?.order === -1
+                (ordenes_columnas()?.[fieldColumna]?.order) === -1
         }"
         (click)="ordenar_ascendente(fieldColumna, tituloColumna)"
         (keydown.enter)="ordenar_ascendente(fieldColumna, tituloColumna)"
@@ -326,7 +326,7 @@
         class="d-flex w-100 justify-content-between dropdown-item border-hover border-hover-warning rounded text-truncate"
         [ngClass]="{
             'border border-warning-subtle':
-                ordenes_columnas()[fieldColumna]?.order === 1
+                (ordenes_columnas()?.[fieldColumna]?.order) === 1
         }"
         (click)="ordenar_descendente(fieldColumna, tituloColumna)"
         (keydown.enter)="ordenar_descendente(fieldColumna, tituloColumna)"
