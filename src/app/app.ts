@@ -1,16 +1,15 @@
-import { APP_BASE_HREF, CommonModule, JsonPipe, registerLocaleData } from '@angular/common';
+import { APP_BASE_HREF, CommonModule, registerLocaleData } from '@angular/common';
 import { Component, HostListener, LOCALE_ID, OnInit, signal, TemplateRef, WritableSignal } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule, RouterOutlet } from '@angular/router';
-import { environment } from '../environments/environment.prod';
-import { HeaderService } from './services/utiles/header/header.service';
+import { HeaderService } from './services/ux/header/header.service';
 import localeMx from '@angular/common/locales/es-MX'
-import { DeteccionViewportService } from './services/utiles/deteccion-viewport/deteccion-viewport.service';
+import { DeteccionViewportService } from './services/ux/deteccion-viewport/deteccion-viewport.service';
+import { ControlNotificacionesComponent } from './components/ux/varios/control-notificaciones/control-notificaciones.component';
 registerLocaleData(localeMx)
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet, RouterModule, CommonModule],
+  imports: [RouterOutlet, RouterModule, CommonModule, ControlNotificacionesComponent],
   templateUrl: './app.html',
   styleUrl: './app.scss',
   standalone: true,

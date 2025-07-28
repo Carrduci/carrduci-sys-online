@@ -4,12 +4,13 @@ import { ServicioGenerico } from '../../clases-abstractas/servicio-generico.abst
 import { environment } from '../../../environments/environment';
 import { catchError, map, Observable, throwError } from 'rxjs';
 import { FolioVendedorPublicoRecibir } from './folio-vendedor-public.model';
+import { ControlNotificacionesService } from '../../services/ux/control-notificaciones/control-notificaciones.service';
 
 @Injectable({
   providedIn: 'root',
 })
 export class FoliosBotonesService extends ServicioGenerico {
-  constructor(private http: HttpClient) {
+  constructor(private http: HttpClient, private notificaciones: ControlNotificacionesService) {
     super();
     this.ruta_base = environment.RUTA_FOLIOS_VENDEDOR;
   }
@@ -24,6 +25,12 @@ export class FoliosBotonesService extends ServicioGenerico {
     });
     return this.http.get<FolioVendedorPublicoRecibir>(URL).pipe(
       map((respuesta: any) => {
+        this.notificaciones.crear_notificacion({
+          tipo: 'alert',
+          modo: 'success',
+          titulo: 'Correcto',
+          cuerpo_mensaje: 'Se obtuvo una cotización'
+        })
         return new FolioVendedorPublicoRecibir(respuesta.datos);
       }),
       catchError((err) => {

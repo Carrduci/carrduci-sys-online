@@ -1,10 +1,10 @@
 import { AfterViewInit, Component, OnInit, signal, TemplateRef, ViewChild, WritableSignal } from '@angular/core';
 import { FoliosBotonesService } from '../folios-botones.service';
-import { HeaderService } from '../../../services/utiles/header/header.service';
-import { ControlQueriesService } from '../../../services/utiles/control-queries/control-queries.service';
-import { LogoCarrduciSvgComponent } from '../../utiles/logo-carrduci-svg/logo-carrduci-svg.component';
+import { HeaderService } from '../../../services/ux/header/header.service';
+import { ControlQueriesService } from '../../../services/ux/control-queries/control-queries.service';
 import { DatePipe, JsonPipe } from '@angular/common';
 import { FolioVendedorPublicoRecibir } from '../folio-vendedor-public.model';
+import { LogoCarrduciSvgComponent } from '../../ux/varios/logo-carrduci-svg/logo-carrduci-svg.component';
 
 @Component({
   selector: 'csys-PUBLICO-vista-folio-detalle',

@@ -1,7 +1,8 @@
 import { Injector, Pipe, PipeTransform } from '@angular/core';
 
 @Pipe({
-  name: 'pipe_dinamico'
+  name: 'pipe_dinamico',
+  standalone: true,
 })
 export class PipeDinamicoPipe implements PipeTransform {
 

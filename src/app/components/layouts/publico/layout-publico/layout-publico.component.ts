@@ -1,5 +1,5 @@
 import { Component, signal, TemplateRef, WritableSignal } from '@angular/core';
-import { HeaderService } from '../../../../services/utiles/header/header.service';
+import { HeaderService } from '../../../../services/ux/header/header.service';
 import { RouterOutlet } from '@angular/router';
 import { CommonModule } from '@angular/common';
 

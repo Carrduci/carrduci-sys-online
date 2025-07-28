@@ -71,6 +71,117 @@ export const NOMBRE_CAMPO_ROL_LOCAL_STORAGE = 'rol_usuario';
 // (o==================================================================o)
 
 // (o==================================================================o)
+//   #region TIPOS BOOTSTRAP (INICIO)
+// (o-----------------------------------------------------------\/-----o)
+
+export type COLORES_BS_FONDO =
+    | 'bg-primary'
+    | 'bg-primary-subtle'
+    | 'bg-secondary'
+    | 'bg-secondary-subtle'
+    | 'bg-success'
+    | 'bg-success-subtle'
+    | 'bg-danger'
+    | 'bg-danger-subtle'
+    | 'bg-warning'
+    | 'bg-warning-subtle'
+    | 'bg-info'
+    | 'bg-info-subtle'
+    | 'bg-light'
+    | 'bg-light-subtle'
+    | 'bg-dark'
+    | 'bg-dark-subtle'
+    | 'bg-body-secondary'
+    | 'bg-body-tertiary'
+    | 'bg-body'
+    | 'bg-black'
+    | 'bg-white'
+    | 'bg-transparent';
+
+export type COLROES_BS_BORDES =
+    | 'border-primary'
+    | 'border-primary'
+    | 'border-secondary'
+    | 'border-secondary'
+    | 'border-success'
+    | 'border-success'
+    | 'border-danger'
+    | 'border-danger'
+    | 'border-warning'
+    | 'border-warning'
+    | 'border-info'
+    | 'border-info'
+    | 'border-light'
+    | 'border-light'
+    | 'border-dark'
+    | 'border-dark'
+    | 'border-black'
+    | 'border-white';
+
+export type COLORES_BS_TEXTO =
+    | 'text-primary'
+    | 'text-primary-emphasis'
+    | 'text-secondary'
+    | 'text-secondary-emphasis'
+    | 'text-success'
+    | 'text-success-emphasis'
+    | 'text-danger'
+    | 'text-danger-emphasis'
+    | 'text-warning'
+    | 'text-warning-emphasis'
+    | 'text-info'
+    | 'text-info-emphasis'
+    | 'text-light'
+    | 'text-light-emphasis'
+    | 'text-dark'
+    | 'text-dark-emphasis'
+    | 'text-body'
+    | 'text-body-emphasis'
+    | 'text-body-secondary'
+    | 'text-body-tertiary'
+    | 'text-black'
+    | 'text-white'
+    | 'text-black-50'
+    | 'text-white-50';
+
+export type POSICIONES_BS =
+    | 'top_left'
+    | 'top_center'
+    | 'top_right'
+    | 'middle_left'
+    | 'middle_center'
+    | 'middle_right'
+    | 'bottom_left'
+    | 'bottom_center'
+    | 'bottom_right';
+
+export type COLORES_BS_ALERT =
+    | 'alert-primary'
+    | 'alert-secondary'
+    | 'alert-success'
+    | 'alert-danger'
+    | 'alert-warning'
+    | 'alert-info'
+    | 'alert-light'
+    | 'alert-dark';
+
+export const POSICIONES_BS_A_CLASES = {
+    top_left: 'top-0 start-0',
+    top_center: 'top-0 start-50 translate-middle-x',
+    top_right: 'top-0 end-0',
+    middle_left: 'top-50 start-0 translate-middle-y',
+    middle_center: 'top-50 start-50 translate-middle',
+    middle_right: 'top-50 end-0 translate-middle-y',
+    bottom_left: 'bottom-0 start-0',
+    bottom_center: 'bottom-0 start-50 translate-middle-x',
+    bottom_right: 'bottom-0 end-0',
+};
+
+// (o-----------------------------------------------------------/\-----o)
+//   #endregion TIPOS BOOTSTRAP (FIN)
+// (o==================================================================o)
+
+// (o==================================================================o)
 //   #region VALIDACIONES (INICIO)
 // (o-----------------------------------------------------------\/-----o)
 
