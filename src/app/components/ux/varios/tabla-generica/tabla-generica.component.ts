@@ -14,11 +14,9 @@ import {
     WritableSignal,
 } from '@angular/core';
 import { PaginadorGenericoComponent } from '../paginador-generico/paginador-generico.component';
-import { BootstrapDropdownDirective } from '../../../../directives/utiles/varios/bootsrap-dropdown/bootstrap-dropdown.directive';
 import { BootstrapTooltipDirective } from '../../../../directives/utiles/varios/bootstrap-tooltip/bootstrap-tooltip.directive';
 import { PipeDinamicoPipe } from '../../../../pipes/pipe-dinamico/pipe-dinamico.pipe';
 import { DeteccionViewportService } from '../../../../services/ux/deteccion-viewport/deteccion-viewport.service';
-import { UtilidadesService } from '../../../../services/ux/utilidades/utilidades.service';
 import { ControlQueriesService } from '../../../../services/ux/control-queries/control-queries.service';
 import { GetfieldPipe } from '../../../../pipes/getfield/getfield.pipe';
 import { FlotanteGenericoDirective } from '../../../../directives/utiles/varios/flotante-generico/flotante-generico.directive';
@@ -26,7 +24,6 @@ import { FlotanteGenericoDirective } from '../../../../directives/utiles/varios/
 @Component({
     selector: 'app-tabla-generica',
     imports: [
-        BootstrapDropdownDirective,
         BootstrapTooltipDirective,
         CommonModule,
         PipeDinamicoPipe,
@@ -38,13 +35,11 @@ import { FlotanteGenericoDirective } from '../../../../directives/utiles/varios/
     styleUrl: './tabla-generica.component.scss',
     standalone: true,
 })
-export class TablaGenericaComponent implements OnInit, OnDestroy {
+export class TablaGenericaComponent implements OnDestroy {
     constructor(
         private viewport: DeteccionViewportService,
         private control_queries: ControlQueriesService
     ) {
-        // this.control_queries.queries.paginacion.accion.definir()
-        // this.control_queries.queries.filtros<Paginacion>().accion.definir()
         effect(() => {
             const QUERY_OBTENIDA =
                 this.control_queries.query_actual().pagination;
@@ -57,31 +52,6 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
 
         this.modo = this.viewport.modo_tabla_generica;
         this.modo_viewport = this.viewport.modo_viewport;
-    }
-
-    ngOnInit(): void {
-        if (!this.control_queries.query_actual().pagination) {
-            const QUERY_DEFECTO = {
-                limit: 5,
-                from: 0,
-                current_page: 1,
-                element_count: 0,
-                page_count: 0,
-                sorting_fields: {},
-            };
-            this.detallePaginacion.update((value) => QUERY_DEFECTO);
-            this.emisor_paginacion.emit(QUERY_DEFECTO);
-            this.control_queries.queries.pagination.accion.definir(
-                QUERY_DEFECTO
-            );
-        } else {
-            const QUERY_OBTENIDA =
-                this.control_queries.query_actual().pagination;
-            if (QUERY_OBTENIDA) {
-                this.detallePaginacion.update((value) => QUERY_OBTENIDA);
-            }
-            this.emisor_paginacion.emit(QUERY_OBTENIDA);
-        }
     }
 
     ngOnDestroy(): void {
@@ -150,7 +120,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
             }
             return value;
         });
-        this.emitir_ordenamiento();
+        this.definir_query_paginacion();
     }
 
     ordenar_descendente(column_field: string, nombre_real: string) {
@@ -164,7 +134,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
             }
             return value;
         });
-        this.emitir_ordenamiento();
+        this.definir_query_paginacion();
     }
 
     no_ordenar(column_field: string) {
@@ -174,17 +144,16 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
             }
             return value;
         });
-        this.emitir_ordenamiento();
+        this.definir_query_paginacion();
     }
 
-    emitir_ordenamiento() {
+    definir_query_paginacion() {
         let paginacion: Pagination = {
             ...this.detallePaginacion(),
             sorting_fields: this.ordenes_columnas(),
         };
         this.detallePaginacion.update((value) => paginacion);
         this.control_queries.queries.pagination.accion.definir(paginacion);
-        this.emisor_paginacion.emit(paginacion);
     }
 
     resultado_paginacion_paginador(resultado_paginacion: Pagination) {
@@ -192,9 +161,7 @@ export class TablaGenericaComponent implements OnInit, OnDestroy {
             ...resultado_paginacion,
             sorting_fields: this.ordenes_columnas(),
         };
-        // this.detallePaginacion.update((value) => paginacion);
         this.control_queries.queries.pagination.accion.definir(paginacion);
-        // this.emisor_paginacion.emit(paginacion);
     }
 
     // (o-----------------------------------------------------------/\-----o)
@@ -283,6 +250,7 @@ export interface CONTENIDO_TABLA_GENERICA<OBJETO> {
     pipe_args?: any[];
     field: DeepKeys<OBJETO>;
     tooltip?: TOOLTIP_TABLA_GENERICA;
+    default_value?: any;
 }
 
 export interface OPCIONES_FILA_TABLA_GENERICA<T> {
@@ -304,5 +272,6 @@ export interface OPCIONES_TABLA_GENERICA<OBJETO> {
     show_layout_button?: boolean;
     show_index_column?: boolean;
     show_sorters?: boolean;
+    sticky_header?: boolean;
     columns: COLUMNA_TABLA_GENERICA<OBJETO>[];
 }

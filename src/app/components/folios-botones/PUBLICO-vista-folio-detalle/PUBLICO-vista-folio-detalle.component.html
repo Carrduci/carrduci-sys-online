@@ -30,4 +30,6 @@
     [datos_tabla]="datos_tabla_generica"
     [documentos]="folio_vendedor()?.folioLineas ?? []"
     [track_field]="'modeloCompleto'"
+    (paginacion)="cambiar_ordenamiento($event)"
+    (click_fila)="accion_click_fila($event)"
 ></app-tabla-generica>

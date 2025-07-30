@@ -140,7 +140,7 @@
             }}
         </caption>
         }
-        <thead>
+        <thead [ngClass]="{'sticky-top': !!datos_tabla().sticky_header}">
             <tr>
                 @if (datos_tabla().show_index_column) {
                     <th scope="col" class="bg-black">
@@ -204,6 +204,8 @@
                                     [tabIndex]="0"
                                     [mostrarConClick]="true"
                                     [ocultar_con_click_interno]="true"
+                                    [maxWidth]="'250px'"
+                                    [minWidth]="'250px'"
                                 >
                                     {{ columna.column_title }}
                                     <span
@@ -270,7 +272,7 @@
                 <th scope="row" class="bg-transparent">{{ indice + 1 }}</th>
                 } @for (columna of datos_tabla().columns; track columna.column_title)
                 {
-                <td class="bg-transparent">{{ doc_fila | getfield: columna.content.field | pipe_dinamico: columna.content.pipe : columna.content.pipe_args ?? [] }}</td>
+                <td class="bg-transparent">{{ doc_fila | getfield: columna.content.field : columna.content.default_value ?? null | pipe_dinamico: columna.content.pipe : columna.content.pipe_args ?? [] }}</td>
                 }
             </tr>
             }

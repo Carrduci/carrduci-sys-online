@@ -6,6 +6,7 @@ import { CurrencyPipe, DatePipe } from '@angular/common';
 import { FolioVendedorPublicoRecibir } from '../folio-vendedor-public.model';
 import { LogoCarrduciSvgComponent } from '../../ux/varios/logo-carrduci-svg/logo-carrduci-svg.component';
 import { OPCIONES_FILA_TABLA_GENERICA, OPCIONES_TABLA_GENERICA, TablaGenericaComponent } from '../../ux/varios/tabla-generica/tabla-generica.component';
+import { UtilidadesService } from '../../../services/ux/utilidades/utilidades.service';
 
 @Component({
   selector: 'csys-PUBLICO-vista-folio-detalle',
@@ -24,6 +25,7 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
     private folio_service: FoliosBotonesService,
     private header_service: HeaderService,
     private query_service: ControlQueriesService,
+    private utiles: UtilidadesService,
   ) {
 
   }
@@ -48,6 +50,7 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
   @ViewChild('TITULO_VISTA') TITULO_VISTA!: TemplateRef<any>
   
   folio_vendedor: WritableSignal<FolioVendedorPublicoRecibir | undefined> = signal(undefined)
+  folio_vendedor_original: WritableSignal<FolioVendedorPublicoRecibir | undefined> = signal(undefined)
   datos_tabla_generica!: OPCIONES_TABLA_GENERICA<FolioVendedorPublicoRecibir['folioLineas'][0]>;
   paginacion!: WritableSignal<Pagination>;
 
@@ -66,6 +69,7 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
         .subscribe({
           next: (folio) => {
             this.folio_vendedor.update((value) => folio)
+            this.folio_vendedor_original.update((value) => structuredClone(folio))
           }
         })
     }
@@ -83,43 +87,82 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
         this.datos_tabla_generica = {
             columns: [
                 {
-                  column_title: 'PEDIDO',
+                  column_title: '#',
+                  header_tooltip: {
+                    content: 'El número de línea de la cotización (comienza desde 0)'
+                  },
                   content: {
                     field: 'numeroDePedido'
                   }
                 },
                 {
                     column_title: 'SKU',
+                    header_tooltip: {
+                      content: 'El código del producto'
+                    },
                     content: {
                         field: 'modeloCompleto.sku'
                     },
                 },
                 {
                   column_title: 'DESCRIPCIÓN',
+                  header_tooltip: {
+                    content: 'Una breve descripción del producto'
+                  },
                   content: {
-                    field: 'modeloCompleto.descripcionFactura'
+                    field: 'modeloCompleto.descripcionFactura',
+                    default_value: 'N/A'
                   }
                 },
                 {
                   column_title: 'PRECIO UNITARIO',
+                  header_tooltip: {
+                    content: 'El precio de una sola pieza'
+                  },
                   content: {
                     field: 'precioUnitarioUsado',
                     pipe: CurrencyPipe,
-                    pipe_args: ['MXN', 'symbol', '0.2-4', 'es-mx']
+                    pipe_args: ['MXN', 'symbol', '0.2-4', 'es-mx'],
+                    default_value: 0,
                   }
+                },
+                {
+                    column_title: 'PRECIO TOTAL',
+                    header_tooltip: {
+                        content: 'El precio de todas las piezas de la línea',
+                    },
+                    content: {
+                        field: 'precioUnitarioUsado',
+                    }
                 }
             ],
             show_index_column: false,
+            sticky_header: true,
             show_sorters: true,
         };
     }
 
     cambiar_ordenamiento(paginacion: Pagination) {
-        try {
-            this.paginacion.update((value) => paginacion);
-        } catch (err) {
-            this.paginacion = signal(paginacion);
+      try {
+          this.paginacion.update((value) => paginacion);
+      } catch (err) {
+          this.paginacion = signal(paginacion);
+      }
+      this.folio_vendedor.update(
+        (value) => {
+          const HAY_ORDENAMIENTO = Object.keys(paginacion.sorting_fields ?? {}).length > 0
+          if (value && HAY_ORDENAMIENTO) {
+            const LINEAS_ORDENADAS = this.utiles.sort_array(
+              value.folioLineas, 
+              this.utiles.convertir_paginacion_a_sort_spec(paginacion)
+            )
+            value.folioLineas = LINEAS_ORDENADAS
+          } else if (!!value && !HAY_ORDENAMIENTO) {
+            return structuredClone(this.folio_vendedor_original())
+          }
+          return value
         }
+      )
     }
 
     accion_click_fila(datos: OPCIONES_FILA_TABLA_GENERICA<FolioVendedorPublicoRecibir>) {

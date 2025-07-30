@@ -87,9 +87,9 @@ declare global {
     element_count: number;
     sorting_fields?: {
       [type: string]: {
-        field?: string;
-        title?: string;
-        order?: 1 | -1;
+        field: string;
+        title: string;
+        order: 1 | -1;
       };
     };
   };
