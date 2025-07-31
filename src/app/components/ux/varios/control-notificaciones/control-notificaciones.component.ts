@@ -4,13 +4,14 @@ import { BootstrapShowAutoDirective } from '../../../../directives/utiles/varios
 import { EspecificacionServicioNotificacion } from '../../../../models/ux/control-notificaciones/control-notificaciones.model';
 import { ControlNotificacionesService } from '../../../../services/ux/control-notificaciones/control-notificaciones.service';
 import { SwitchBootstrapShowDirective } from '../../../../directives/utiles/varios/switch-bootstrap-show/switch-bootstrap-show.directive';
+import { ModalNormalComponent } from '../../flotantes/modal/modal-normal/modal-normal.component';
 
 @Component({
     selector: 'app-control-notificaciones',
     imports: [
     BootstrapShowAutoDirective,
     BootstrapHideAutoDirective,
-    SwitchBootstrapShowDirective,
+    ModalNormalComponent,
 ],
     templateUrl: './control-notificaciones.component.html',
     styleUrl: './control-notificaciones.component.scss',

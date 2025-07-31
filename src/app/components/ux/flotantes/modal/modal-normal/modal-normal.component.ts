@@ -59,8 +59,8 @@ export class ModalNormalComponent {
   }
   
   ngOnInit() {
-    this.__id_modal = this.utiles.crear_bsonobj_id_para_variable();
-    this.emisor_id_modal.emit(this.__id_modal);
+    // this.id_modal = this.utiles.crear_bsonobj_id_para_variable();
+    // this.emisor_id_modal.emit(this.id_modal);
   }
 
 
@@ -71,7 +71,8 @@ export class ModalNormalComponent {
     gigante: 'modal-xl',
   };
 
-  private __id_modal!: string;
+  @Input() id_modal?: string;
+
   private __mostrar_modal: boolean = false;
   
   /**
@@ -134,6 +135,12 @@ export class ModalNormalComponent {
       }
     }
   }
+  @Input() modal_classes?: string
+  @Input() modal_dialog_classes?: string
+  @Input() modal_content_classes?: string
+  @Input() modal_header_classes?: string
+  @Input() modal_body_classes?: string
+  @Input() modal_footer_classes?: string
 
   /**
    * Genera una emision cuando se le da click
@@ -160,18 +167,16 @@ export class ModalNormalComponent {
     return this.MEDIDAS[this.medida];
   }
 
-  get id_modal(): string {
-    return this.__id_modal;
-  }
-
   get se_muestra_modal(): boolean {
     return this.__mostrar_modal;
   }
 
-  get elemento_modal(): Modal {
-    const elemento_modal = document.getElementById(this.id_modal) as HTMLElement;
-    const modal = new Modal(elemento_modal);
-    return modal
+  get elemento_modal(): Modal | void {
+    if (this.id_modal) {
+      const elemento_modal = document.getElementById(this.id_modal) as HTMLElement;
+      const modal = new Modal(elemento_modal);
+      return modal
+    }
   }
 
   get clase_mostrando(): string {
@@ -205,12 +210,16 @@ export class ModalNormalComponent {
   private __mostrando_modal: boolean = false
 
   mostrar_modal() {
-    this.elemento_modal.show();
-    this.__mostrando_modal = true
+    if (this.elemento_modal) {
+      this.elemento_modal.show();
+      this.__mostrando_modal = true
+    }
   }
   
   ocultar_modal() {
-    this.elemento_modal.hide();
-    this.__mostrando_modal = false
+    if (this.elemento_modal) {
+      this.elemento_modal.hide();
+      this.__mostrando_modal = false
+    }
   }
 }

@@ -41,8 +41,8 @@ export class ControlNotificacionesService {
     })
   }
 
-  private eliminar_notif_de_arreglo(
-    id_notificacion: string, 
+  eliminar_notif_de_arreglo(
+    id_notificacion: string | undefined, 
     tipo: 'alert' | 'toast' | 'modal',
   ) {
     // const ESTADO_ACTUAL = this.estado_notifiaciones.value
@@ -142,7 +142,7 @@ export class ControlNotificacionesService {
   private preparar_modal(
     datos: EspecificacionNotificacion,
   ) {
-    if (!datos.duracion_en_ms) datos.duracion_en_ms = 6000
+    // if (!datos.duracion_en_ms) datos.duracion_en_ms = 6000
     if (!datos.modo) datos.modo = 'neutro'
     switch (datos.modo) {
       case 'danger':
@@ -198,9 +198,13 @@ export class ControlNotificacionesService {
       case 'alert':
         this.preparar_alert(datos)
         this.agregar_notif_a_arreglo(datos, 'alert')
+        setTimeout(() => {
+          this.eliminar_notif_de_arreglo(
+            <string>datos.id, datos.tipo
+          )
+        }, (datos.duracion_en_ms ?? 0) + 200)
         break;
       case 'modal':
-        if (!datos.duracion_en_ms) datos.duracion_en_ms = 20000
         this.preparar_modal(datos)
         this.agregar_notif_a_arreglo(datos, 'modal')
         break;
@@ -211,9 +215,12 @@ export class ControlNotificacionesService {
         const elemento_modal = document.getElementById(ID) as HTMLElement;
         const modal = new Modal(elemento_modal);
         modal.show()
-        setTimeout(() => {
-          modal.hide()
-        }, datos.duracion_en_ms)
+        if (datos?.duracion_en_ms) {
+          setTimeout(() => {
+            modal.hide()
+            this.eliminar_notif_de_arreglo(ID, 'modal')
+          }, datos.duracion_en_ms)
+        }
       }
     }, 0)
   }

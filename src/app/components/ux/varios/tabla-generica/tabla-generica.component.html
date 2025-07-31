@@ -205,7 +205,7 @@
                 @for (columna of columnas_computed(); track columna.column_title) {
                     @switch (!!datos_tabla().show_sorters && !!columna.content.field) {
                         @case (true) {
-                            <th scope="col" class="bg-black">
+                            <td scope="col" class="bg-black text-{{columna.alignment}}" [attr.align]="columna.alignment">
                                 <button
                                     [id]="'_' + (columna.content.field ?? '')"
                                     type="menu"
@@ -283,21 +283,22 @@
                                         } }
                                     </span>
                                 </button>
-                            </th>
+                            </td>
                         }
                         @case (false) {
-                            <th 
+                            <td 
                                 scope="col" 
-                                class="bg-black"
+                                class="bg-black text-{{columna.alignment}}"
                                 [bs-tooltip]="
                                     columna.header_tooltip?.content
                                         | pipe_dinamico
                                             : columna.header_tooltip?.pipe
                                             : columna.header_tooltip?.pipe_args
                                 "
+                                [attr.align]="columna.alignment"
                             >
                                 {{ columna.column_title }}
-                            </th>
+                            </td>
                         }
                     }        
                 }
@@ -322,7 +323,7 @@
                 <th scope="row" class="bg-transparent">{{ indice + 1 }}</th>
                 } @for (columna of datos_tabla().columns; track columna.column_title)
                 {
-                    <td class="bg-transparent">{{
+                    <td class="bg-transparent text-{{columna.alignment}}" [attr.align]="columna.alignment">{{
                         (
                             columna.content.callback
                                 ? (
@@ -343,6 +344,27 @@
             </tr>
             }
         </tbody>
+        @if (datos_tabla().footer) {
+            <tfoot [ngClass]="{'sticky-bottom bottom-0': datos_tabla().sticky_footer}">
+                @for (footer_row of datos_tabla().footer; track $index) {
+                    <tr>
+                        @for (footer_cell of footer_row.cells; track $index) {
+                            <td 
+                                class="bg-black {{ footer_cell.classes }}"
+                                [attr.colspan]="footer_cell.colspan"
+                                [attr.align]="footer_cell.alignment"
+                            >
+                                @if (footer_cell.content) {
+                                    {{ footer_cell.content }}
+                                } @else if (footer_cell.template) {
+                                    <ng-container [ngTemplateOutlet]="footer_cell.template"></ng-container>
+                                }
+                            </td>
+                        }
+                    </tr>
+                }
+            </tfoot>
+        }
     </table>
 </ng-template>
 
@@ -356,8 +378,10 @@
     let-tituloColumna="tituloColumna"
 >
     @if (tooltip) {
-    {{ tooltip }}
-    <hr class="hr-completo" />
+        <div class="p-2">
+            {{ tooltip }}
+        </div>
+        <hr class="hr-completo" />
     }
     <li
         tabindex="1"
@@ -369,10 +393,10 @@
         (click)="no_ordenar(fieldColumna)"
         (keydown.enter)="no_ordenar(fieldColumna)"
     >
-        <div class="w-10 text-truncate0">No ordenar</div>
-        <div>
+        <div class="pe-2">
             <i class="bi bi-ban"></i>
         </div>
+        <div class="w-100 text-truncate">No ordenar</div>
     </li>
     <li
         tabindex="1"
@@ -384,10 +408,10 @@
         (click)="ordenar_ascendente(fieldColumna, tituloColumna)"
         (keydown.enter)="ordenar_ascendente(fieldColumna, tituloColumna)"
     >
-        <div class="w-100 text-truncate">Ordenar ascendente</div>
-        <div>
+        <div class="pe-2">
             <i class="bi bi-arrow-up"></i>
         </div>
+        <div class="w-100 text-truncate">Ordenar ascendente</div>
     </li>
     <li
         tabindex="1"
@@ -399,10 +423,10 @@
         (click)="ordenar_descendente(fieldColumna, tituloColumna)"
         (keydown.enter)="ordenar_descendente(fieldColumna, tituloColumna)"
     >
-        <div class="w-100 text-truncate">Ordenar descendente</div>
-        <div>
+        <div class="pe-2">
             <i class="bi bi-arrow-down"></i>
         </div>
+        <div class="w-100 text-truncate">Ordenar descendente</div>
     </li>
 </ng-template>
 

@@ -1,4 +1,5 @@
 <div 
+    *ngIf="id_modal"
     class="modal fade" 
     [id]="id_modal"
     tabindex="-1" 
@@ -16,13 +17,14 @@
             modal-dialog-centered 
             modal-dialog-scrollable
             {{ claseMedida }}
+            {{ modal_classes }}
         "
         (click)="emitir_click_cuadro_dialogo()"
     >
-        <div class="modal-content">
+        <div class="modal-content {{ modal_content_classes }}">
 
             <ng-container *ngIf="!ocultarEncabezado">
-                <div class="modal-header">
+                <div class="modal-header {{ modal_header_classes }}">
                     <ng-content select="[encabezado]"></ng-content>
                     <button 
                         type="button" 
@@ -37,7 +39,7 @@
                 </div>
             </ng-container>
 
-            <div class="modal-body" *ngIf="mostrarContenido">
+            <div class="modal-body {{ modal_body_classes }}" *ngIf="mostrarContenido">
                 <div class="container-fluid">
                     <div class="row">
                         <div class="col-12">
@@ -50,7 +52,7 @@
             <ng-content select="[contenidoSinBody]"></ng-content>
 
             <ng-container *ngIf="!ocultarPie">
-                <div class="modal-footer">
+                <div class="modal-footer {{ modal_footer_classes }}">
                     <ng-content select="[pie]"></ng-content>
                 </div>
             </ng-container>

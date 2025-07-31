@@ -72,12 +72,14 @@ export class TablaGenericaComponent implements OnDestroy {
     });
     columnas_computed = computed(() => this.datos_tabla().columns);
     @Input('datos_tabla')
-    set _datos_tabla(datos: OPCIONES_TABLA_GENERICA<any>) {
-        this.sobreescribir_valores_por_defecto(datos);
-        this.datos_tabla.update((current_value) => ({
-            ...current_value,
-            ...datos,
-        }));
+    set _datos_tabla(datos: OPCIONES_TABLA_GENERICA<any> | undefined) {
+        if (datos) {
+            this.sobreescribir_valores_por_defecto(datos);
+            this.datos_tabla.update((current_value) => ({
+                ...current_value,
+                ...datos,
+            }));
+        }
     }
     @Input('documentos') documentos: any[] = [];
     @Input('track_field') track_field: string = '_id'
@@ -255,9 +257,21 @@ export interface CONTENIDO_TABLA_GENERICA<OBJETO> {
     default_value?: any;
 }
 
-export interface OPCIONES_FILA_TABLA_GENERICA<T> {
+export interface OPCIONES_FILA_TABLA_GENERICA<OBJETO> {
     row_index: number;
-    row_document: T;
+    row_document: OBJETO;
+}
+
+export interface CELDA_PIE_TABLA_GENERICA<OBJETO> {
+    colspan?: number,
+    content?: any,
+    template?: TemplateRef<any>
+    alignment?: 'center' | 'left' | 'right'
+    classes?: string,
+}
+
+export interface FILA_PIE_TABLA_GENERICA<OBJETO> {
+    cells: CELDA_PIE_TABLA_GENERICA<OBJETO>[];    
 }
 
 export interface OPCIONES_TABLA_GENERICA<OBJETO> {
@@ -275,5 +289,7 @@ export interface OPCIONES_TABLA_GENERICA<OBJETO> {
     show_index_column?: boolean;
     show_sorters?: boolean;
     sticky_header?: boolean;
+    sticky_footer?: boolean;
+    footer?: FILA_PIE_TABLA_GENERICA<OBJETO>[]
     columns: COLUMNA_TABLA_GENERICA<OBJETO>[];
 }
