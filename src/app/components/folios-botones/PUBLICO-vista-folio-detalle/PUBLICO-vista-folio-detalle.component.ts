@@ -2,7 +2,7 @@ import { AfterViewInit, Component, OnInit, signal, TemplateRef, ViewChild, Writa
 import { FoliosBotonesService } from '../folios-botones.service';
 import { HeaderService } from '../../../services/ux/header/header.service';
 import { ControlQueriesService } from '../../../services/ux/control-queries/control-queries.service';
-import { CurrencyPipe, DatePipe } from '@angular/common';
+import { CurrencyPipe, DatePipe, DecimalPipe } from '@angular/common';
 import { FolioVendedorPublicoRecibir } from '../folio-vendedor-public.model';
 import { LogoCarrduciSvgComponent } from '../../ux/varios/logo-carrduci-svg/logo-carrduci-svg.component';
 import { OPCIONES_FILA_TABLA_GENERICA, OPCIONES_TABLA_GENERICA, TablaGenericaComponent } from '../../ux/varios/tabla-generica/tabla-generica.component';
@@ -115,6 +115,18 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
                   }
                 },
                 {
+                  column_title: 'CANTIDAD',
+                  header_tooltip: {
+                    content: 'Las piezas de la línea'
+                  },
+                  content: {
+                    field: 'cantidad',
+                    pipe: DecimalPipe,
+                    pipe_args: ['0.0', 'es-MX'],
+                    default_value: 0,
+                  }
+                },
+                {
                   column_title: 'PRECIO UNITARIO',
                   header_tooltip: {
                     content: 'El precio de una sola pieza'
@@ -122,20 +134,23 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
                   content: {
                     field: 'precioUnitarioUsado',
                     pipe: CurrencyPipe,
-                    pipe_args: ['MXN', 'symbol', '0.2-4', 'es-mx'],
+                    pipe_args: ['MXN', 'symbol', '0.2-4', 'es-MX'],
                     default_value: 0,
                   }
                 },
                 {
-                    column_title: 'PRECIO TOTAL',
-                    header_tooltip: {
-                        content: 'El precio de todas las piezas de la línea',
-                    },
-                    content: {
-                        callback: (objeto) => {
-                          return (objeto.cantidad ?? 0) * (objeto.precioUnitarioUsado ?? 0)
-                        }
-                    }
+                  column_title: 'PRECIO TOTAL',
+                  header_tooltip: {
+                      content: 'El precio de todas las piezas de la línea',
+                  },
+                  content: {
+                      callback: (objeto) => {
+                        return (objeto.cantidad ?? 0) * (objeto.precioUnitarioUsado ?? 0)
+                      },
+                      pipe: CurrencyPipe,
+                      pipe_args: ['MXN', 'symbol', '0.2-4', 'es-MX'],
+                      default_value: 0,
+                  }
                 }
             ],
             show_index_column: false,

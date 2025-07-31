@@ -124,7 +124,7 @@
         @case ('tabla') {
             <ng-container [ngTemplateOutlet]="placeholder_tabla"></ng-container>
         } @case ('columnas') {
-            <ng-container [ngTemplateOutlet]="modoColumnas"></ng-container>
+            <ng-container [ngTemplateOutlet]="placeholder_recuadros"></ng-container>
         } @default {
             <ng-container [ngTemplateOutlet]="placeholder_tabla"></ng-container>
         }
@@ -286,7 +286,16 @@
                             </th>
                         }
                         @case (false) {
-                            <th scope="col" class="bg-black">
+                            <th 
+                                scope="col" 
+                                class="bg-black"
+                                [bs-tooltip]="
+                                    columna.header_tooltip?.content
+                                        | pipe_dinamico
+                                            : columna.header_tooltip?.pipe
+                                            : columna.header_tooltip?.pipe_args
+                                "
+                            >
                                 {{ columna.column_title }}
                             </th>
                         }

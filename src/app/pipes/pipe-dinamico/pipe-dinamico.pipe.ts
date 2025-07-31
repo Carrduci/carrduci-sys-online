@@ -15,7 +15,8 @@ export class PipeDinamicoPipe implements PipeTransform {
       if (!!pipe_token) {
         try {
           return pipe_token.prototype.transform(valor_pipe, ...(pipe_args ?? []))
-        } catch {
+        } catch (error) {
+          console.log(valor_pipe)
           return pipe_token.prototype.transform(valor_pipe)
         }
       } else {

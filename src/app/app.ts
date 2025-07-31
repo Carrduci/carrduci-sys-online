@@ -1,11 +1,9 @@
-import { APP_BASE_HREF, CommonModule, registerLocaleData } from '@angular/common';
+import { APP_BASE_HREF, CommonModule } from '@angular/common';
 import { Component, HostListener, LOCALE_ID, OnInit, signal, TemplateRef, WritableSignal } from '@angular/core';
 import { RouterModule, RouterOutlet } from '@angular/router';
 import { HeaderService } from './services/ux/header/header.service';
-import localeMx from '@angular/common/locales/es-MX'
 import { DeteccionViewportService } from './services/ux/deteccion-viewport/deteccion-viewport.service';
 import { ControlNotificacionesComponent } from './components/ux/varios/control-notificaciones/control-notificaciones.component';
-registerLocaleData(localeMx)
 
 @Component({
   selector: 'app-root',
@@ -14,9 +12,7 @@ registerLocaleData(localeMx)
   styleUrl: './app.scss',
   standalone: true,
   providers: [
-      // Configuraciones de idioma.
-      { provide: APP_BASE_HREF, useValue: '/' },
-      { provide: LOCALE_ID, useValue: 'es-MX' },
+
   ],
 })
 export class App implements OnInit{
