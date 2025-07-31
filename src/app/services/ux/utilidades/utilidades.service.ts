@@ -312,6 +312,7 @@ export class UtilidadesService {
             reemplazoValorIndefinido?: any;
             valorError?: any;
             aplanarSubArreglos?: boolean;
+            noRecorrerArreglos?: true
         }
     ): any {
         if (!opciones) opciones = {};
@@ -325,7 +326,7 @@ export class UtilidadesService {
             for (let iRuta = 0; iRuta < ruta.length; iRuta++) {
                 const pasoRuta = ruta[iRuta];
                 const esArreglo = this.revisar_tipo(objetoActual, 'Array');
-                if (esArreglo) {
+                if (esArreglo && opciones.noRecorrerArreglos) {
                     let objetoActualTemporal = objetoActual.map(
                         (unSubObjeto: any) => {
                             return this.seleccionar_campo_cualquier_nivel_profundo(

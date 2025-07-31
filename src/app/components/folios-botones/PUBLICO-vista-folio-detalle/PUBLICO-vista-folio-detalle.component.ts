@@ -132,7 +132,9 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
                         content: 'El precio de todas las piezas de la línea',
                     },
                     content: {
-                        field: 'precioUnitarioUsado',
+                        callback: (objeto) => {
+                          return (objeto.cantidad ?? 0) * (objeto.precioUnitarioUsado ?? 0)
+                        }
                     }
                 }
             ],
@@ -150,7 +152,7 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
       }
       this.folio_vendedor.update(
         (value) => {
-          const HAY_ORDENAMIENTO = Object.keys(paginacion.sorting_fields ?? {}).length > 0
+          const HAY_ORDENAMIENTO = Object.keys(paginacion?.sorting_fields ?? {}).length > 0
           if (value && HAY_ORDENAMIENTO) {
             const LINEAS_ORDENADAS = this.utiles.sort_array(
               value.folioLineas, 

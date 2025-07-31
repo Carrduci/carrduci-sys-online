@@ -20,6 +20,7 @@ import { DeteccionViewportService } from '../../../../services/ux/deteccion-view
 import { ControlQueriesService } from '../../../../services/ux/control-queries/control-queries.service';
 import { GetfieldPipe } from '../../../../pipes/getfield/getfield.pipe';
 import { FlotanteGenericoDirective } from '../../../../directives/utiles/varios/flotante-generico/flotante-generico.directive';
+import { CallfunctionPipe } from '../../../../pipes/callfunction/callfunction.pipe';
 
 @Component({
     selector: 'app-tabla-generica',
@@ -30,6 +31,7 @@ import { FlotanteGenericoDirective } from '../../../../directives/utiles/varios/
         PaginadorGenericoComponent,
         GetfieldPipe,
         FlotanteGenericoDirective,
+        CallfunctionPipe,
     ],
     templateUrl: './tabla-generica.component.html',
     styleUrl: './tabla-generica.component.scss',
@@ -228,28 +230,28 @@ export interface CLICK_FILA_TABLA_GENERICA {}
 
 export interface COLUMNA_TABLA_GENERICA<OBJETO> {
     alignment?: 'left' | 'center' | 'right';
-    header_tooltip?: TOOLTIP_TABLA_GENERICA;
+    header_tooltip?: TOOLTIP_TABLA_GENERICA<OBJETO>;
     avoid_click_detection?: boolean;
     content: CONTENIDO_TABLA_GENERICA<OBJETO>;
     column_title: string;
 }
 
-export interface TOOLTIP_TABLA_GENERICA {
+export interface TOOLTIP_TABLA_GENERICA<OBJETO> {
     content?: string;
-    content_callback?: any;
+    content_callback?: (objeto: OBJETO) => any;
     pipe?: Pipe;
     pipe_args?: any[];
     template_tooltip?: TemplateRef<any>;
 }
 
 export interface CONTENIDO_TABLA_GENERICA<OBJETO> {
-    class_callback?: any;
+    class_callback?: (objeto: OBJETO) => any;
     template?: TemplateRef<any>;
-    callback?: any;
+    callback?: (objeto: OBJETO) => any;
     pipe?: Pipe;
     pipe_args?: any[];
-    field: DeepKeys<OBJETO>;
-    tooltip?: TOOLTIP_TABLA_GENERICA;
+    field?: DeepKeys<OBJETO>
+    tooltip?: TOOLTIP_TABLA_GENERICA<OBJETO>;
     default_value?: any;
 }
 

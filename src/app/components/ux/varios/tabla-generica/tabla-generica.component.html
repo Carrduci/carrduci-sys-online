@@ -154,27 +154,27 @@
                         </button>
                     </th>
                 }
-                @switch (!!datos_tabla().show_sorters) {
-                    @case (true) {
-                        @for (columna of columnas_computed(); track columna.column_title) {
+                @for (columna of columnas_computed(); track columna.column_title) {
+                    @switch (!!datos_tabla().show_sorters && !!columna.content.field) {
+                        @case (true) {
                             <th scope="col" class="bg-black">
                                 <button
-                                    [id]="'_' + columna.content.field"
+                                    [id]="'_' + (columna.content.field ?? '')"
                                     type="menu"
                                     class="btn pt-0 pb-0 ps-1 pe-1 shadow-hover-lg rounded {{
-                                        !!ordenes_columnas()?.[columna.content.field]?.order
+                                        !!ordenes_columnas()?.[columna.content.field ?? '']?.order
                                             ? 'text-hover-dark'
                                             : ''
                                     }}"
                                     [ngClass]="{
                                         'border border-light-subtle bg-hover-light':
-                                            ordenes_columnas()?.[columna.content.field]
+                                            ordenes_columnas()?.[columna.content.field ?? '']
                                                 ?.order === -1,
                                         'border border-warning-subtle bg-hover-warning':
-                                            ordenes_columnas()?.[columna.content.field]
+                                            ordenes_columnas()?.[columna.content.field ?? '']
                                                 ?.order === 1,
                                         'bg-hover-primary text-hover-light':
-                                            !ordenes_columnas()?.[columna.content.field]
+                                            !ordenes_columnas()?.[columna.content.field ?? '']
                                                 ?.order
                                     }"
                                     flotante-generico
@@ -185,18 +185,18 @@
                                             | pipe_dinamico
                                                 : columna.header_tooltip?.pipe
                                                 : columna.header_tooltip?.pipe_args,
-                                        fieldColumna: columna.content.field,
+                                        fieldColumna: columna.content.field ?? '',
                                         tituloColumna: columna.column_title
                                     }"
                                     [template]="opcionesDropdown"
                                     [clasesRecuadro]="
-                                        ordenes_columnas()?.[columna.content.field]
+                                        ordenes_columnas()?.[columna.content.field ?? '']
                                             ?.order === -1
                                             ? 'border-hover-light'
-                                            : ordenes_columnas()?.[columna.content.field]
+                                            : ordenes_columnas()?.[columna.content.field ?? '']
                                                 ?.order === 1
                                             ? 'border-hover-warning'
-                                            : !ordenes_columnas()?.[columna.content.field]
+                                            : !ordenes_columnas()?.[columna.content.field ?? '']
                                                 ?.order
                                             ? 'border-hover-primary'
                                             : 'border-hover-primary'
@@ -210,22 +210,22 @@
                                     {{ columna.column_title }}
                                     <span
                                         class="pe-1 ps-1 {{
-                                            !!ordenes_columnas()?.[columna.content.field]
+                                            !!ordenes_columnas()?.[columna.content.field ?? '']
                                                 ?.order
                                                 ? ' bg-black rounded'
                                                 : ''
                                         }}"
                                         [ngClass]="{
                                             'text-warning-emphasis':
-                                                ordenes_columnas()?.[columna.content.field]
+                                                ordenes_columnas()?.[columna.content.field ?? '']
                                                     ?.order === 1,
                                             'text-light-emphasis':
-                                                ordenes_columnas()?.[columna.content.field]
+                                                ordenes_columnas()?.[columna.content.field ?? '']
                                                     ?.order === -1
                                         }"
                                     >
                                         @switch
-                                        (ordenes_columnas()?.[columna.content.field]?.order)
+                                        (ordenes_columnas()?.[columna.content.field ?? '']?.order)
                                         { @case (-1) {
                                         <i class="bi bi-arrow-up"></i>
                                         } @case (1) {
@@ -237,19 +237,12 @@
                                 </button>
                             </th>
                         }
-                    }
-                    @case (false) {
-                        @for (columna of columnas_computed(); track columna.column_title) {
+                        @case (false) {
                             <th scope="col" class="bg-black">
                                 {{ columna.column_title }}
                             </th>
                         }
-                        <!-- @for (titulo of ordenes_columnas() | keyvalue; track
-                        titulo.key) {
-                            {{ titulo.value.titulo }}
-                        } -->
-                    }
-                    
+                    }        
                 }
             </tr>
         </thead>
@@ -272,7 +265,23 @@
                 <th scope="row" class="bg-transparent">{{ indice + 1 }}</th>
                 } @for (columna of datos_tabla().columns; track columna.column_title)
                 {
-                <td class="bg-transparent">{{ doc_fila | getfield: columna.content.field : columna.content.default_value ?? null | pipe_dinamico: columna.content.pipe : columna.content.pipe_args ?? [] }}</td>
+                    <td class="bg-transparent">{{
+                        (
+                            columna.content.callback
+                                ? (
+                                    (columna.content.callback | callfunction: doc_fila)
+                                    ?? columna.content.default_value
+                                )
+                                : (
+                                    doc_fila | getfield
+                                        : columna.content.field ?? ''
+                                        : columna.content.default_value 
+                                )
+                        )
+                        | pipe_dinamico
+                            : columna.content.pipe 
+                            : columna.content.pipe_args ?? [] 
+                    }}</td>
                 }
             </tr>
             }
