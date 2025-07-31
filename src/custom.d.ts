@@ -88,17 +88,6 @@ declare global {
       ? OBJECT[PATHS]
       : never;
 
-  export type SingleValue<OBJECT, PATH extends DeepKeys<OBJETO>> =
-      PATH extends keyof OBJECT
-      ? OBJECT[PATH]
-      : PATHS extends `${infer Key}.${infer Rest}`
-        ? Key extends keyof OBJECT
-          ? Rest extends DeepKeys<OBJECT[Key]>
-            ? SingleValue<OBJECT[Key], Rest>
-            : never
-          : never
-        : never;
-
   export type Pagination = {
     limit: number;
     from: number;

@@ -120,7 +120,15 @@
     }
 }
 @if (!datos_tabla() || documentos.length === 0) { 
-    PLACEHOLDER TABLA
+    @switch (modo()) {
+        @case ('tabla') {
+            <ng-container [ngTemplateOutlet]="placeholder_tabla"></ng-container>
+        } @case ('columnas') {
+            <ng-container [ngTemplateOutlet]="modoColumnas"></ng-container>
+        } @default {
+            <ng-container [ngTemplateOutlet]="placeholder_tabla"></ng-container>
+        }
+    }
 }
 
 <!-----------------------------------------------------------/\------>
@@ -130,6 +138,46 @@
 <!--===============================================================-->
 <!-- #region #MARK: TEMPLATES -->
 <!-----------------------------------------------------------\/------>
+
+<ng-template
+    #placeholder_tabla
+>
+    <table
+        class="table table-borderless table-hover caption-top"
+    >
+        <thead [ngClass]="{'sticky-top': !!datos_tabla().sticky_header}">
+            <tr>
+                @for (item of [].constructor(8); track $index) {
+                    <th scope="col" class="bg-black">
+                        <div class="placeholder-glow m-0">
+                            <div class="placeholder col-12 rounded-5 tw:h-[30px]">
+                            </div>
+                        </div>
+                    </th>
+                }
+            </tr>
+        </thead>
+        <tbody>
+            @for (item of [].constructor(20); track $index) {
+                <tr class="bg-transparent">
+                    <td class="bg-transparent" colspan="8">
+                        <div class="placeholder-glow">
+                            <div class="placeholder col-12 rounded-5">
+                            </div>
+                        </div>
+                    </td>
+                </tr>
+            }
+        </tbody>
+
+    </table>
+</ng-template>
+
+<ng-template
+    #placeholder_recuadros
+>
+
+</ng-template>
 
 <ng-template #modoTabla>
     <table class="table table-borderless table-hover caption-top">

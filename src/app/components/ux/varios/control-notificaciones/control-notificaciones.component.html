@@ -80,3 +80,59 @@
         
     </div>
 }
+
+@if (notificaciones().modal.length > 0) {
+    @for (modal of notificaciones().modal; track modal.id) {
+      <div 
+            class="modal fade" 
+            [id]="modal.id"
+            tabindex="-1" 
+            role="dialog"
+            [bsmostrar]="true"
+            aria-hidden="true"
+            [attr.data-bs-keyboard]="false" 
+            [attr.data-bs-backdrop]="'static'"
+        >
+            <div 
+                class="
+                    modal-dialog 
+                    modal-fullscreen-lg-down 
+                    modal-dialog-centered 
+                    modal-dialog-scrollable
+                "
+            >
+                <div class="modal-content {{ modal.color_fondo }} {{ modal.color_borde }} {{ modal.color_texto }}">
+
+                    @if (!!modal.titulo) {
+                        <div class="modal-header {{ modal.color_fondo }} {{ modal.color_borde }} {{ modal.color_texto }}">
+                            <h3>
+                                <i class="{{modal.simbolo}} me-2 font-bold "></i>
+                                {{ modal.titulo }}
+                            </h3>
+                            <button 
+                                type="button" 
+                                class="btn-close" 
+                                data-bs-dismiss="modal" 
+                                aria-label="Close"
+                                aria-hidden="true"
+                            >
+                                <i class="fas fa-times"></i>
+                            </button>
+                        </div>
+                    }
+
+                    <div class="modal-body {{ modal.color_fondo }} {{ modal.color_borde }} {{ modal.color_texto }}">
+                        <div class="container-fluid">
+                            <div class="row">
+                                <div class="col-12">
+                                    <div [innerHTML]="modal.cuerpo_mensaje"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+    }
+}

@@ -34,6 +34,12 @@ export class FoliosBotonesService extends ServicioGenerico {
         return new FolioVendedorPublicoRecibir(respuesta.datos);
       }),
       catchError((err) => {
+        this.notificaciones.crear_notificacion({
+          tipo: 'modal',
+          modo: 'danger',
+          titulo: 'Error',
+          cuerpo_mensaje: this.notificaciones.gestionarError(err)
+        })
         return throwError(() => new Error());
       })
     );

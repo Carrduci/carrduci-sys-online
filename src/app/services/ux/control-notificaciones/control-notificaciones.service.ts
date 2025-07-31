@@ -1,6 +1,7 @@
 import { Injectable, signal, WritableSignal } from '@angular/core';
 import { UtilidadesService } from '../utilidades/utilidades.service';
 import { EspecificacionServicioNotificacion, EspecificacionNotificacion } from '../../../models/ux/control-notificaciones/control-notificaciones.model';
+import { Modal } from 'bootstrap';
 
 @Injectable({
   providedIn: 'root',
@@ -138,6 +139,48 @@ export class ControlNotificacionesService {
     }
   }
 
+  private preparar_modal(
+    datos: EspecificacionNotificacion,
+  ) {
+    if (!datos.duracion_en_ms) datos.duracion_en_ms = 6000
+    if (!datos.modo) datos.modo = 'neutro'
+    switch (datos.modo) {
+      case 'danger':
+        datos.color_fondo = 'bg-danger'
+        datos.color_borde = 'border-light'
+        datos.simbolo = 'bi bi-x-circle'
+        break;
+      case 'question':
+        datos.color_fondo = 'bg-black'
+        datos.color_borde = 'border-light'
+        datos.simbolo = 'bi bi-question-circle'
+        break;
+      case 'info':
+        datos.color_fondo = 'bg-info'
+        datos.color_texto = 'text-black'
+        datos.color_borde = 'border-black'
+        datos.simbolo = 'bi bi-info-circle'
+        break;
+      case 'notice':
+        datos.color_fondo = 'bg-primary'
+        datos.color_borde = 'border-light'
+        datos.simbolo = 'bi bi-bell'
+        break;
+      case 'success':
+        datos.color_fondo = 'bg-success'
+        datos.color_borde = 'border-black'
+        datos.color_texto = 'text-black'
+        datos.simbolo = 'bi bi-check-circle'
+        break;
+      case 'warning':
+        datos.color_fondo = 'bg-warning'
+        datos.color_borde = 'border-light'
+        datos.color_texto = 'text-black'
+        datos.simbolo = 'bi bi-exclamation-circle'
+        break;
+    }
+  }
+
   crear_notificacion(datos: EspecificacionNotificacion) {
     const ID = this.utiles.crear_bsonobj_id_para_variable()
     datos.id = ID
@@ -158,13 +201,78 @@ export class ControlNotificacionesService {
         break;
       case 'modal':
         if (!datos.duracion_en_ms) datos.duracion_en_ms = 20000
+        this.preparar_modal(datos)
         this.agregar_notif_a_arreglo(datos, 'modal')
         break;
     }
 
     setTimeout(() => {
-
+      if (datos.tipo === 'modal') {
+        const elemento_modal = document.getElementById(ID) as HTMLElement;
+        const modal = new Modal(elemento_modal);
+        modal.show()
+        setTimeout(() => {
+          modal.hide()
+        }, datos.duracion_en_ms)
+      }
     }, 0)
   }
+
+	gestionarError(err: any): string {
+		if (!err.error && err.status !== 403) {
+			// Si el error viene del GUI no tiene la propiedad
+			// error y no muestra el mensaje. Si pasa esto
+			// lo capturamos aqui
+			throw err
+		}
+    let texto = ''
+
+		texto = err.error
+
+		if (err.error.data) {
+			texto = err.error.data.mensaje
+
+			if (err.error.data.errorGeneral) {
+				if (err.error.data.errorGeneral.errors) {
+					texto = this.recorrerErrores(
+						err.error.data.errorGeneral.errors
+					)
+				} else {
+					texto = `
+            <div style="margin: 10px; padding: 2%;">
+              <span class="font-bold h6">Esta es más información acerca del problema. </span>
+              <br />
+              <div class="saltos-linea-tabs">${err.error.data.errorGeneral}</div>
+            </div>
+          `
+				}
+			}
+		}
+
+		return texto
+	}
+
+  
+	private recorrerErrores(errors: any): string {
+		let footer =
+			// tslint:disable-next-line:max-line-length
+			'<span > <h4 class="text-muted animated tada text-center">Esta es más información acerca del problema. </h4>'
+		for (const key in errors) {
+			if (errors.hasOwnProperty(key)) {
+				const objetoError = errors[key]
+				footer += `<hr /><span class="text-rigth"><strong class="text-primary" >${key}: </strong>${objetoError.message}`
+
+				if (objetoError.properties) {
+					if (!!objetoError.properties.value) {
+						footer += `<br /> El valor erroneo es: <span class="text-danger">${objetoError.properties.value} </span></span> `
+					}
+				}
+
+				footer += '</br>'
+			}
+		}
+
+		return footer
+	}
   
 }
