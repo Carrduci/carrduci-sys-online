@@ -91,19 +91,34 @@
             modal_content_classes="{{ modal.color_fondo }} {{ modal.color_borde }} {{ modal.color_texto }}"
             modal_header_classes="{{ modal.color_fondo }} {{ modal.color_borde }} {{ modal.color_texto }}"
             modal_body_classes="{{ modal.color_fondo }} {{ modal.color_borde }} {{ modal.color_texto }}"
-            (cerrar)="controlNotifs.eliminar_notif_de_arreglo(modal.id, 'modal')"
+            modal_footer_classes="{{ modal.color_fondo }} {{ modal.color_borde }} {{ modal.color_texto }}"
+            [ocultarPie]="!((!!modal.botones) && (modal.botones?.length ?? 0) > 0)"
+            (cerrar)="controlNotifs.eliminar_notificacion(modal.id, 'modal')"
         >
             @if (!!modal.titulo) {
                 <ng-container encabezado>
                     <h3>
                         <i class="{{modal.simbolo}} me-2 font-bold "></i>
-                        {{ modal.titulo }}
+                        <span [innerHTML]="modal.titulo"></span>
                     </h3>
                 </ng-container>
             }
             <ng-container contenido>
                 <div [innerHTML]="modal.cuerpo_mensaje"></div>
             </ng-container>
+            @if (!!modal.botones && (modal.botones?.length ?? 0) > 0) {
+                <ng-container pie>
+                    @for (boton of modal.botones ?? []; track $index) {
+                      <button
+                        [class]="boton.class"
+                        type="button"
+                        (click)="boton.callback()"
+                      >
+                        <span [innerHTML]="boton.texto"></span>
+                      </button>
+                    }
+                </ng-container>
+            }
         </app-modal-normal>
     }
 }

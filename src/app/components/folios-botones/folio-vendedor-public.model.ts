@@ -9,6 +9,7 @@ export class FolioVendedorPublicoRecibir {
   createdAt?: Date
   updatedAt?: Date
   numeroDeFolio?: number
+  autorizacionCliente?: Date
   folioLineas: {
       modeloCompleto: {
         nombreCompleto: string
@@ -34,6 +35,7 @@ export class FolioVendedorPublicoRecibir {
     this.createdAt = params.createdAt
     this.updatedAt = params.updatedAt
     this.numeroDeFolio = params.numeroDeFolio
+    this.autorizacionCliente = params.autorizacionCliente
     let lineas: FolioVendedorRecibirParams['folioLineas'] = []
     for (const LINEA of params.folioLineas) {
       const NUEVA_LINEA: FolioVendedorRecibirParams['folioLineas'][0] = {
@@ -60,6 +62,7 @@ export interface FolioVendedorRecibirParams {
   createdAt: Date,
   updatedAt: Date,
   numeroDeFolio: number,
+  autorizacionCliente: Date,
   folioLineas: {
       modeloCompleto: {
         nombreCompleto: string,

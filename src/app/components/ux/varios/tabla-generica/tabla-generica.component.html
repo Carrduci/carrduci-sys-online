@@ -147,7 +147,13 @@
     >
         <thead [ngClass]="{'sticky-top': !!datos_tabla().sticky_header}">
             <tr>
-                @for (item of [].constructor(8); track $index) {
+                <th scope="col" class="bg-black">
+                    <div class="placeholder-glow m-0">
+                        <div class="placeholder col-12 rounded-5 tw:h-[30px]">
+                        </div>
+                    </div>
+                </th>
+                @for (item of [].constructor(3); track $index) {
                     <th scope="col" class="bg-black">
                         <div class="placeholder-glow m-0">
                             <div class="placeholder col-12 rounded-5 tw:h-[30px]">
@@ -158,9 +164,15 @@
             </tr>
         </thead>
         <tbody>
-            @for (item of [].constructor(20); track $index) {
+            @for (item of [].constructor(10); track $index) {
                 <tr class="bg-transparent">
-                    <td class="bg-transparent" colspan="8">
+                    <td class="bg-transparent" colspan="3">
+                        <div class="placeholder-glow">
+                            <div class="placeholder col-12 rounded-5">
+                            </div>
+                        </div>
+                    </td>
+                    <td class="bg-transparent" colspan="1">
                         <div class="placeholder-glow">
                             <div class="placeholder col-12 rounded-5">
                             </div>

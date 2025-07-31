@@ -41,20 +41,35 @@ export class ControlNotificacionesService {
     })
   }
 
-  eliminar_notif_de_arreglo(
+  eliminar_notificacion(
     id_notificacion: string | undefined, 
     tipo: 'alert' | 'toast' | 'modal',
   ) {
     // const ESTADO_ACTUAL = this.estado_notifiaciones.value
-    this.estado_notifiaciones.update((value) => {
-      const ARREGLO_ACTUALIZADO = value[tipo]
-        .filter((notif) => notif.id !== id_notificacion)
-      const ESTADO_ACTUALIZADO = {
-        ...value,
-        [tipo]: ARREGLO_ACTUALIZADO
-      }
-      return ESTADO_ACTUALIZADO
-    })
+    if (tipo === 'modal' && id_notificacion) {
+      this.cerrar_modal(id_notificacion)
+      setTimeout(() => {
+        this.estado_notifiaciones.update((value) => {
+          const ARREGLO_ACTUALIZADO = value[tipo]
+            .filter((notif) => notif.id !== id_notificacion)
+          const ESTADO_ACTUALIZADO = {
+            ...value,
+            [tipo]: ARREGLO_ACTUALIZADO
+          }
+          return ESTADO_ACTUALIZADO
+        })
+      }, 500)
+    } else {
+      this.estado_notifiaciones.update((value) => {
+        const ARREGLO_ACTUALIZADO = value[tipo]
+          .filter((notif) => notif.id !== id_notificacion)
+        const ESTADO_ACTUALIZADO = {
+          ...value,
+          [tipo]: ARREGLO_ACTUALIZADO
+        }
+        return ESTADO_ACTUALIZADO
+      })
+    }
   }
 
   private modificar_notif_de_arreglo(
@@ -146,51 +161,59 @@ export class ControlNotificacionesService {
     if (!datos.modo) datos.modo = 'neutro'
     switch (datos.modo) {
       case 'danger':
-        datos.color_fondo = 'bg-danger'
-        datos.color_borde = 'border-light'
+        datos.color_fondo = 'bg-black'
+        datos.color_borde = 'border-danger'
+        datos.color_texto = 'text-danger'
         datos.simbolo = 'bi bi-x-circle'
         break;
       case 'question':
         datos.color_fondo = 'bg-black'
-        datos.color_borde = 'border-light'
+        datos.color_borde = 'border-black'
+        datos.color_texto = 'text-light'
         datos.simbolo = 'bi bi-question-circle'
         break;
       case 'info':
-        datos.color_fondo = 'bg-info'
-        datos.color_texto = 'text-black'
+        datos.color_fondo = 'bg-black'
+        datos.color_texto = 'text-info'
         datos.color_borde = 'border-black'
         datos.simbolo = 'bi bi-info-circle'
         break;
       case 'notice':
-        datos.color_fondo = 'bg-primary'
-        datos.color_borde = 'border-light'
+        datos.color_fondo = 'bg-black'
+        datos.color_borde = 'border-primary'
+        datos.color_texto = 'text-primary'
         datos.simbolo = 'bi bi-bell'
         break;
       case 'success':
-        datos.color_fondo = 'bg-success'
-        datos.color_borde = 'border-black'
-        datos.color_texto = 'text-black'
+        datos.color_fondo = 'bg-black'
+        datos.color_borde = 'border-success'
+        datos.color_texto = 'text-success'
         datos.simbolo = 'bi bi-check-circle'
         break;
       case 'warning':
-        datos.color_fondo = 'bg-warning'
-        datos.color_borde = 'border-light'
-        datos.color_texto = 'text-black'
+        datos.color_fondo = 'bg-black'
+        datos.color_borde = 'border-warning'
+        datos.color_texto = 'text-warning'
         datos.simbolo = 'bi bi-exclamation-circle'
         break;
     }
   }
 
+  private cerrar_modal(ID: string) {
+    const elemento_modal = document.getElementById(ID) as HTMLElement;
+    const modal = new Modal(elemento_modal);
+    modal.hide()
+  }
+
   crear_notificacion(datos: EspecificacionNotificacion) {
     const ID = this.utiles.crear_bsonobj_id_para_variable()
     datos.id = ID
-    
     switch (datos.tipo) {
       case 'toast':
         this.preparar_toast(datos)
         this.agregar_notif_a_arreglo(datos, 'toast')
         setTimeout(() => {
-          this.eliminar_notif_de_arreglo(
+          this.eliminar_notificacion(
             <string>datos.id, datos.tipo
           )
         }, (datos.duracion_en_ms ?? 0) + 200)
@@ -199,7 +222,7 @@ export class ControlNotificacionesService {
         this.preparar_alert(datos)
         this.agregar_notif_a_arreglo(datos, 'alert')
         setTimeout(() => {
-          this.eliminar_notif_de_arreglo(
+          this.eliminar_notificacion(
             <string>datos.id, datos.tipo
           )
         }, (datos.duracion_en_ms ?? 0) + 200)
@@ -217,12 +240,13 @@ export class ControlNotificacionesService {
         modal.show()
         if (datos?.duracion_en_ms) {
           setTimeout(() => {
-            modal.hide()
-            this.eliminar_notif_de_arreglo(ID, 'modal')
+            this.eliminar_notificacion(ID, 'modal')
           }, datos.duracion_en_ms)
         }
       }
     }, 0)
+
+    return ID
   }
 
 	gestionarError(err: any): string {

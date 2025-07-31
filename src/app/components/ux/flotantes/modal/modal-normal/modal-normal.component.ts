@@ -191,13 +191,15 @@ export class ModalNormalComponent {
   }
   
   emitirClickCerrarAreaModal() {
-    if (!this.solo_boton && !this.detener_emision) {
-      this.emisorClickBotonCerrar.emit()
-      this.__mostrando_modal = false
-    }
-    else {
-      this.solo_boton = false
-      this.detener_emision = false
+    if (this.permitirCerrarFueraDeModal) {
+      if (!this.solo_boton && !this.detener_emision) {
+        this.emisorClickBotonCerrar.emit()
+        this.__mostrando_modal = false
+      }
+      else {
+        this.solo_boton = false
+        this.detener_emision = false
+      }
     }
   }
 

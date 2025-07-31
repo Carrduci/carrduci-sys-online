@@ -44,4 +44,38 @@ export class FoliosBotonesService extends ServicioGenerico {
       })
     );
   }
+
+  PUBLICO_aprobar_folio_de_vendedor(
+    id: string
+  ): Observable<FolioVendedorPublicoRecibir> {
+    const URL = this.obtener_url(
+      [
+        this.ruta_base, 
+        'autorizarCotizacionPublica'
+      ], 
+      { id }
+    );
+
+    return this.http.put<FolioVendedorPublicoRecibir>(URL, {}).pipe(
+      map((respuesta: any) => {
+        this.notificaciones.crear_notificacion({
+          tipo: 'alert',
+          modo: 'success',
+          titulo: 'Correcto',
+          cuerpo_mensaje: respuesta.mensaje
+        })
+        return new FolioVendedorPublicoRecibir(respuesta.datos);
+      }),
+      catchError((err) => {
+        this.notificaciones.crear_notificacion({
+          tipo: 'modal',
+          modo: 'danger',
+          titulo: 'Error',
+          cuerpo_mensaje: this.notificaciones.gestionarError(err)
+        })
+        return throwError(() => new Error());
+      })
+    );
+  }
+    
 }

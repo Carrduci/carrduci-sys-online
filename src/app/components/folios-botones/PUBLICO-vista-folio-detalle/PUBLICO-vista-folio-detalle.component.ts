@@ -7,6 +7,7 @@ import { FolioVendedorPublicoRecibir } from '../folio-vendedor-public.model';
 import { LogoCarrduciSvgComponent } from '../../ux/varios/logo-carrduci-svg/logo-carrduci-svg.component';
 import { OPCIONES_FILA_TABLA_GENERICA, OPCIONES_TABLA_GENERICA, TablaGenericaComponent } from '../../ux/varios/tabla-generica/tabla-generica.component';
 import { UtilidadesService } from '../../../services/ux/utilidades/utilidades.service';
+import { ControlNotificacionesService } from '../../../services/ux/control-notificaciones/control-notificaciones.service';
 
 @Component({
   selector: 'csys-PUBLICO-vista-folio-detalle',
@@ -28,6 +29,7 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
     private query_service: ControlQueriesService,
     private utiles: UtilidadesService,
     private currency_pipe: CurrencyPipe,
+    private notificaciones: ControlNotificacionesService,
   ) {
 
   }
@@ -56,6 +58,7 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
   paginacion!: WritableSignal<Pagination>;
   precio_total_folio_vendedor?: any
   precio_total_con_iva_folio_vendedor?: any
+  id_dialogo_confirmacion_aprobado?: string
 
   // (o-----------------------------------------------------------/\-----o)
   //   #endregion VARIABLES
@@ -245,12 +248,66 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
     }
 
     accion_click_fila(datos: OPCIONES_FILA_TABLA_GENERICA<FolioVendedorPublicoRecibir>) {
-        console.log(datos)
+        // console.log(datos)
     }
 
   
   // (o-----------------------------------------------------------/\-----o)
   //   #endregion TABLA GENERICA
+  // (o==================================================================o)
+
+  // (o==================================================================o)
+  //   #region APROBADO DE FOLIOS
+  // (o-----------------------------------------------------------\/-----o)
+  
+  solicitar_confirmacion_aprobado() {
+    this.id_dialogo_confirmacion_aprobado = 
+      this.notificaciones.crear_notificacion({
+        tipo: 'modal',
+        modo: 'warning',
+        titulo: '¿Aprobar cotización?',
+        cuerpo_mensaje: '<span class="h6">Una vez que hagas esto, la cotización podrá ser procesada o surtida</span>',
+        botones: [
+          // {
+          //   class: 'btn btn-secondary',
+          //   texto: 'Cencelar <i class="bi bi-arrow-left"></i>',
+          //   callback: () => {
+          //     this.notificaciones.eliminar_notificacion(
+          //       this.id_dialogo_confirmacion_aprobado, 
+          //       'modal'
+          //     )
+          //   }
+          // },
+          {
+            class: 'btn btn-warning',
+            texto: 'Aprobar <i class="bi bi-check"></i>',
+            callback: () => {
+              this.aprobar_contizacion()
+            }
+          },
+        ]
+      })
+  }
+
+  aprobar_contizacion() {
+    const ID = this.query_service.query_actual().id
+    if (ID) {
+      this.folio_service
+        .PUBLICO_aprobar_folio_de_vendedor(ID)
+        .subscribe({
+          next: () => {
+            this.notificaciones.eliminar_notificacion(
+              this.id_dialogo_confirmacion_aprobado, 
+              'modal'
+            )
+            this.obtener_folio_vendedor()
+          }
+        })
+    }
+  }
+  
+  // (o-----------------------------------------------------------/\-----o)
+  //   #endregion APROBADO DE FOLIOS
   // (o==================================================================o)
 
 }

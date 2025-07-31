@@ -34,4 +34,11 @@ export interface EspecificacionNotificacion {
   simbolo?: string
   titulo?: string
   cuerpo_template?: TemplateRef<any>
+  botones?: BotonNotificaciones[]
+}
+
+export interface BotonNotificaciones {
+  class: string
+  texto: string
+  callback: () => any
 }
