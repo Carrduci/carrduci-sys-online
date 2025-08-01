@@ -16,6 +16,11 @@ export class FoliosBotonesService extends ServicioGenerico {
   }
 
   ruta_base!: string;
+  options = {
+    headers: {
+      'proxy-authorization': environment.PROXY_AUTH
+    }
+  }
 
   PUBLICO_obtener_folio_vendedor_por_id(
     id: string
@@ -23,7 +28,7 @@ export class FoliosBotonesService extends ServicioGenerico {
     const URL = this.obtener_url([this.ruta_base, 'obtenerCotizacionPublica'], {
       id,
     });
-    return this.http.get<FolioVendedorPublicoRecibir>(URL).pipe(
+    return this.http.get<FolioVendedorPublicoRecibir>(URL, this.options).pipe(
       map((respuesta: any) => {
         this.notificaciones.crear_notificacion({
           tipo: 'alert',
@@ -56,7 +61,7 @@ export class FoliosBotonesService extends ServicioGenerico {
       { id }
     );
 
-    return this.http.put<FolioVendedorPublicoRecibir>(URL, {}).pipe(
+    return this.http.put<FolioVendedorPublicoRecibir>(URL, {}, this.options).pipe(
       map((respuesta: any) => {
         this.notificaciones.crear_notificacion({
           tipo: 'alert',
