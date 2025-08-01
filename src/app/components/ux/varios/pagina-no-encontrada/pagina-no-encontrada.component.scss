@@ -1,0 +1,29 @@
+.contenedor {
+  height: 100vh;
+  width: 100vw;
+  background: radial-gradient(
+    farthest-corner at 200% -200%,
+    rgb(231, 192, 101),
+    rgb(231, 192, 101),
+    rgb(231, 192, 101),
+    rgb(64, 78, 104)
+  );
+}
+
+.texto-centrado {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: .4rem;
+    border: solid .2rem black;
+    padding: 1rem;
+}
+
+.texto-404 {
+  font-size: 5rem;
+}
+
+.texto-no-encontrado {
+  font-size: 3rem;
+}

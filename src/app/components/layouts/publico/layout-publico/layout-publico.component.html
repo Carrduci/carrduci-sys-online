@@ -1,0 +1,63 @@
+<div
+  #backdropLayoutPublico
+  class="
+    tw:h-[100vh] 
+    tw:w-[100vw] 
+    tw:overflow-hidden
+    tw:m-0 
+    tw:bg-[url('./assets/fondo_botones.JPG')] 
+    tw:bg-cover bg-no-repeat bg-center"
+>
+  <div
+    #esquemaLayoutPublico
+    class="
+      tw:bottom-[-10] 
+      tw:h-[98vh] 
+      tw:overflow-auto 
+      tw:rounded-xl 
+      tw:w-[98vw] 
+      tw:top-[50%] 
+      tw:left-[50%] 
+      tw:transform-[translate(-50%,-50%)] 
+      tw:absolute 
+      tw:overflow-hidden
+    "
+  >
+    <div
+      #encabezadoLayoutPublico
+      class="
+        tw:backdrop-blur-[20px]
+        tw:bg-black/50 
+        tw:rounded-xl 
+        tw:mb-[3vh]
+        tw:sticky 
+        tw:top-0 
+        tw:z-2 
+        tw:border-b-1
+      "
+    >
+      @if (titulo_componente) { @if (titulo_componente()) {
+      <ng-container [ngTemplateOutlet]="titulo_componente()"></ng-container>
+      } @else {
+      <h1>
+        {{ titulo_string() }}
+      </h1>
+      } }
+    </div>
+    <div 
+      #cuerpoLayoutPublico
+      class="
+        tw:backdrop-blur-[20px] 
+        tw:bg-black/50
+        tw:rounded-xl 
+        tw:p-3
+        tw:overflow-y-auto!
+        tw:overflow-x-hidden
+        alto-cuerpo
+      "
+      style="max-height: calc( 95vh - {{altoEncabezadoEnPx()}}px );"
+    >
+      <router-outlet />
+    </div>
+  </div>
+</div>

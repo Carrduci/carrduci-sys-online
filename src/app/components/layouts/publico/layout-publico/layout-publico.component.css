@@ -1,0 +1,7 @@
+:root {
+    --alto-cupero: 100vh
+}
+
+.alto-cuerpo {
+    height: var(--alto-cuerpo);
+}

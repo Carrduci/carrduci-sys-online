@@ -1,0 +1,124 @@
+@if (notificaciones().toast.length > 0) {
+    <div class="toast-container top-0 end-0 pt-1 pe-1 position-fixed tw:z-3">
+
+        @for (toast of notificaciones().toast; track toast.id) {
+            <div 
+                class="toast m-3 {{toast.color_fondo}} {{toast.color_borde}} {{toast.color_texto}}"
+                role="alert"
+                aria-live="assertive"
+                aria-atomic="true"
+                [id]="toast.id"
+
+                bs-show-auto
+                [bs-hide-auto]="toast.duracion_en_ms"
+            >
+                <div class="toast-header {{toast.color_fondo}} {{toast.color_borde}} {{toast.color_texto}}">
+                    <i class="{{toast.simbolo}} me-2 font-bold"></i>
+                    <strong class="me-auto">{{toast.titulo || 'Perpetuus'}}</strong>
+                    <button 
+                        type="button" 
+                        class="btn-close" 
+                        data-bs-dismiss="toast"
+                        aria-label="Close"
+                    ></button>
+                </div>
+                <div class="toast-body">
+                    <div class="saltos-lineas-tabs">
+                        {{ toast.cuerpo_mensaje }}
+                    </div>
+                </div>
+            </div>
+        }
+        
+    </div>
+}
+
+@if (notificaciones().alert.length > 0) {
+    <div class="top-0 start-0 pt-1 pe-1 position-fixed tw:lg:w-[25vw] tw:md:w-[50vw] tw:sm:w-[98vw] tw:w-[98vw] alert-container tw:z-3">
+
+        @for (alert of notificaciones().alert; track alert.id) {
+            <div 
+                class="alert {{alert.color_alert}} m-3"
+                role="alert"
+                [id]="alert.id"
+
+                bs-show-auto
+                [bs-hide-auto]="alert.duracion_en_ms"
+            >
+                @if (!!alert.titulo) {
+                    <h6 class="alert-heading d-flex justify-content-between">
+                        <span>
+                            <i class="{{alert.simbolo}} me-2 font-bold"></i>
+                            {{ alert.titulo }}
+                        </span>
+                        <button
+                            type="button"                        
+                            class="btn-close"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"
+                        ></button>
+                    </h6>
+                }
+                <span class="d-flex justify-content-between">
+                    @if (!alert.titulo) {
+                        <i class="{{alert.simbolo}} me-2 font-bold"></i>
+                    }
+                    <div class="saltos-lineas-tabs">
+                        {{ alert.cuerpo_mensaje }}
+                    </div>
+                    @if (!alert.titulo) {
+                        <button
+                            type="button"                        
+                            class="btn-close ms-auto"
+                            data-bs-dismiss="alert"
+                            aria-label="Close"
+                        ></button>
+                    }
+                </span>
+            </div>
+        }
+        
+    </div>
+}
+
+@if (notificaciones().modal.length > 0) {
+    @for (modal of notificaciones().modal; track modal.id) {
+        <app-modal-normal
+            [medida]="'mediano'"
+            [permitirCerrarFueraDeModal]="false"
+            [id_modal]="modal.id"
+            [abrir_modal]="true"
+            modal_content_classes="{{ modal.color_fondo }} {{ modal.color_borde }} {{ modal.color_texto }}"
+            modal_header_classes="{{ modal.color_fondo }} {{ modal.color_borde }} {{ modal.color_texto }}"
+            modal_body_classes="{{ modal.color_fondo }} {{ modal.color_borde }} {{ modal.color_texto }}"
+            modal_footer_classes="{{ modal.color_fondo }} {{ modal.color_borde }} {{ modal.color_texto }}"
+            [ocultarPie]="!((!!modal.botones) && (modal.botones?.length ?? 0) > 0)"
+            (cerrar)="controlNotifs.eliminar_notificacion(modal.id, 'modal')"
+        >
+            @if (!!modal.titulo) {
+                <ng-container encabezado>
+                    <h3>
+                        <i class="{{modal.simbolo}} me-2 font-bold "></i>
+                        <span [innerHTML]="modal.titulo"></span>
+                    </h3>
+                </ng-container>
+            }
+            <ng-container contenido>
+                <div [innerHTML]="modal.cuerpo_mensaje"></div>
+            </ng-container>
+            @if (!!modal.botones && (modal.botones?.length ?? 0) > 0) {
+                <ng-container pie>
+                    @for (boton of modal.botones ?? []; track $index) {
+                      <button
+                        [class]="boton.class"
+                        type="button"
+                        (click)="boton.callback()"
+                      >
+                        <span [innerHTML]="boton.texto"></span>
+                      </button>
+                    }
+                </ng-container>
+            }
+        </app-modal-normal>
+    }
+}
