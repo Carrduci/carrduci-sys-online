@@ -188,7 +188,34 @@
 <ng-template
     #placeholder_recuadros
 >
-
+    @for (item of [].constructor(10); track $index) {
+        <app-card
+            [show_header]="false"
+            [show_footer]="false"
+            [show_content_without_body]="true"
+            [show_body]="false"
+            [card_classes]="'mb-4 bg-transparent'"
+        >
+            <ng-container content_without_body>
+                <ul class="list-group list-group-flush">
+                    @for (item of [].constructor(4); track $index) {
+                        <li class="list-group-item p-0 m-0 bg-transparent">
+                            <div class="row p-0 m-0">
+                                <div class="col-6 tw:bg-black placeholder-glow">
+                                    <div class="placeholder col-12 rounded-5 mb-1">
+                                    </div>
+                                </div>
+                                <div class="col-6 placeholder-glow">
+                                    <div class="placeholder col-{{$index + 2}} rounded-5 mb-1">
+                                    </div>                                    
+                                </div>
+                            </div>
+                        </li>                
+                    }
+                </ul>
+            </ng-container>
+        </app-card>
+    }
 </ng-template>
 
 <ng-template #modoTabla>
