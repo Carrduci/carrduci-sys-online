@@ -1,4 +1,4 @@
-import { Injectable, signal, WritableSignal } from '@angular/core';
+import { Injectable, Renderer2, RendererFactory2, signal, WritableSignal } from '@angular/core';
 import { UtilidadesService } from '../utilidades/utilidades.service';
 import { EspecificacionServicioNotificacion, EspecificacionNotificacion } from '../../../models/ux/control-notificaciones/control-notificaciones.model';
 import { Modal } from 'bootstrap';
@@ -8,25 +8,20 @@ import { Modal } from 'bootstrap';
 })
 export class ControlNotificacionesService {
 
-  // especificacion: EspecificacionNotificacion = {
-  //   tipo: 'toast',
-  //   // duracionEnMs: 5000,
-  //   cuerpoMensaje: '¡Hola! Esta es una notificación...',
-  //   posicion: 'top_right',
-  //   ancho: '18vw'
-  // }
-
   estado_notifiaciones: WritableSignal<EspecificacionServicioNotificacion> = signal({
       toast: [],
       alert: [],
       modal: [],
   })
-
-  // estado_notificaciones$ = this._notificaciones_subject.asObservable()
+  private modales: {[type: string]: Modal} = {}
+  private renderer2!: Renderer2
   
   constructor(
-    private utiles: UtilidadesService
-  ) { }
+    private utiles: UtilidadesService,
+    private renderer2Factory: RendererFactory2
+  ) {
+    this.renderer2 = renderer2Factory.createRenderer(null, null)
+  }
 
   private agregar_notif_a_arreglo(
     nueva_notif: EspecificacionNotificacion,
@@ -45,20 +40,22 @@ export class ControlNotificacionesService {
     id_notificacion: string | undefined, 
     tipo: 'alert' | 'toast' | 'modal',
   ) {
-    // const ESTADO_ACTUAL = this.estado_notifiaciones.value
     if (tipo === 'modal' && id_notificacion) {
       this.cerrar_modal(id_notificacion)
-      setTimeout(() => {
-        this.estado_notifiaciones.update((value) => {
-          const ARREGLO_ACTUALIZADO = value[tipo]
-            .filter((notif) => notif.id !== id_notificacion)
-          const ESTADO_ACTUALIZADO = {
-            ...value,
-            [tipo]: ARREGLO_ACTUALIZADO
-          }
-          return ESTADO_ACTUALIZADO
-        })
-      }, 500)
+      this.renderer2.listen(document.getElementById(id_notificacion), 'transitionend', (event: TransitionEvent) => {
+        if (event.propertyName === undefined) {
+          delete this.modales[id_notificacion]
+          this.estado_notifiaciones.update((value) => {
+            const ARREGLO_ACTUALIZADO = value[tipo]
+              .filter((notif) => notif.id !== id_notificacion)
+            const ESTADO_ACTUALIZADO = {
+              ...value,
+              [tipo]: ARREGLO_ACTUALIZADO
+            }
+            return ESTADO_ACTUALIZADO
+          })
+        }
+      })
     } else {
       this.estado_notifiaciones.update((value) => {
         const ARREGLO_ACTUALIZADO = value[tipo]
@@ -200,9 +197,7 @@ export class ControlNotificacionesService {
   }
 
   private cerrar_modal(ID: string) {
-    const elemento_modal = document.getElementById(ID) as HTMLElement;
-    const modal = new Modal(elemento_modal);
-    modal.hide()
+    this.modales[ID].hide()
   }
 
   crear_notificacion(datos: EspecificacionNotificacion) {
@@ -236,8 +231,8 @@ export class ControlNotificacionesService {
     setTimeout(() => {
       if (datos.tipo === 'modal') {
         const elemento_modal = document.getElementById(ID) as HTMLElement;
-        const modal = new Modal(elemento_modal);
-        modal.show()
+        this.modales[ID] = new Modal(elemento_modal)
+        this.modales[ID].show()
         if (datos?.duracion_en_ms) {
           setTimeout(() => {
             this.eliminar_notificacion(ID, 'modal')
