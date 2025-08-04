@@ -97,6 +97,7 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
             this.precio_total_folio_vendedor = this.calcular_precio_total()
             this.precio_total_con_iva_folio_vendedor = this.calcular_precio_total(true)
             this.crear_datos_tabla()
+            this.cambiar_ordenamiento(this.paginacion())
           }
         })
     }
@@ -268,16 +269,16 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
         titulo: '¿Aprobar cotización?',
         cuerpo_mensaje: '<span class="h6">Una vez que hagas esto, la cotización podrá ser procesada o surtida</span>',
         botones: [
-          // {
-          //   class: 'btn btn-secondary',
-          //   texto: 'Cencelar <i class="bi bi-arrow-left"></i>',
-          //   callback: () => {
-          //     this.notificaciones.eliminar_notificacion(
-          //       this.id_dialogo_confirmacion_aprobado, 
-          //       'modal'
-          //     )
-          //   }
-          // },
+          {
+            class: 'btn btn-secondary',
+            texto: 'Cancelar <i class="bi bi-arrow-left"></i>',
+            callback: () => {
+              this.notificaciones.eliminar_notificacion(
+                this.id_dialogo_confirmacion_aprobado, 
+                'modal'
+              )
+            }
+          },
           {
             class: 'btn btn-warning',
             texto: 'Aprobar <i class="bi bi-check"></i>',
@@ -295,12 +296,14 @@ export class VistaFolioDetalleComponent implements OnInit, AfterViewInit {
       this.folio_service
         .PUBLICO_aprobar_folio_de_vendedor(ID)
         .subscribe({
-          next: () => {
+          next: (folio) => {
+            this.folio_vendedor.update((value) => folio)
+            this.folio_vendedor_original.update((value) => folio)
             this.notificaciones.eliminar_notificacion(
               this.id_dialogo_confirmacion_aprobado, 
               'modal'
             )
-            this.obtener_folio_vendedor()
+            this.cambiar_ordenamiento(this.paginacion())
           }
         })
     }
