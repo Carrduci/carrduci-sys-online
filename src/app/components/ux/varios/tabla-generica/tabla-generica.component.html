@@ -381,7 +381,80 @@
 </ng-template>
 
 <ng-template #modoColumnas>
-    MODO COLUMNAS
+    @for (doc_fila of documentos; track doc_fila[track_field]; let indice = $index) {
+        <app-card
+            [show_header]="false"
+            [show_footer]="false"
+            [show_content_without_body]="true"
+            [show_body]="false"
+            [card_classes]="'mb-4 bg-transparent'"
+        >
+            <ng-container content_without_body>
+                <ul class="list-group list-group-flush">
+                    @for (columna of datos_tabla().columns; track columna.column_title)
+                    {
+                        <li class="list-group-item p-0 m-0 bg-transparent">
+                            <div class="row p-0 m-0">
+                                <div class="col-6 tw:bg-black">
+                                    <span class="font-bold h6">
+                                        {{ columna.column_title }}
+                                    </span>
+                                </div>
+                                <div class="col-6">
+                                    {{
+                                        (
+                                            columna.content.callback
+                                                ? (
+                                                    (columna.content.callback | callfunction: doc_fila)
+                                                    ?? columna.content.default_value
+                                                )
+                                                : (
+                                                    doc_fila | getfield
+                                                        : columna.content.field ?? ''
+                                                        : columna.content.default_value 
+                                                )
+                                        )
+                                        | pipe_dinamico
+                                            : columna.content.pipe 
+                                            : columna.content.pipe_args ?? [] 
+                                    }}
+                                </div>
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </ng-container>
+        </app-card>
+    }
+    @if (datos_tabla().footer) {
+        <app-card
+            [show_header]="false"
+            [show_footer]="false"
+            [show_content_without_body]="true"
+            [show_body]="false"
+            [card_classes]="'mb-4'"
+        >
+            <ng-container content_without_body>
+                <ul class="list-group list-group-flush">
+                    @for (footer_row of datos_tabla().footer; track $index) {
+                        <li class="list-group-item p-0 m-0 bg-black">
+                            <div class="row p-0 m-0">
+                                @for (footer_cell of footer_row.cells; track $index) {
+                                    <div class="col" class="{{ footer_cell.classes }}">
+                                        @if (footer_cell.content) {
+                                            {{ footer_cell.content }}
+                                        } @else if (footer_cell.template) {
+                                            <ng-container [ngTemplateOutlet]="footer_cell.template"></ng-container>
+                                        }
+                                    </div>
+                                }                                
+                            </div>
+                        </li>
+                    }
+                </ul>
+            </ng-container>
+        </app-card>
+    }
 </ng-template>
 
 <ng-template #opcionesDropdown

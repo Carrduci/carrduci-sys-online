@@ -33,3 +33,15 @@ tr th:last-child {
         transparent
     );
 }
+
+.list-group-item:first-child .row [class*="col-"]:first-child {
+    background-color: black;
+    border-top-left-radius: 0.375rem;
+    border-top-right-radius: 0.375rem;
+}
+
+.list-group-item:last-child .row [class*="col-"]:first-child {
+    background-color: black;
+    border-bottom-left-radius: 0.375rem;
+    border-bottom-right-radius: 0.375rem;
+}

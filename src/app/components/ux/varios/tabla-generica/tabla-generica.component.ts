@@ -21,6 +21,7 @@ import { ControlQueriesService } from '../../../../services/ux/control-queries/c
 import { GetfieldPipe } from '../../../../pipes/getfield/getfield.pipe';
 import { FlotanteGenericoDirective } from '../../../../directives/utiles/varios/flotante-generico/flotante-generico.directive';
 import { CallfunctionPipe } from '../../../../pipes/callfunction/callfunction.pipe';
+import { CardComponent } from '../../card/card/card.component';
 
 @Component({
     selector: 'app-tabla-generica',
@@ -32,6 +33,7 @@ import { CallfunctionPipe } from '../../../../pipes/callfunction/callfunction.pi
         GetfieldPipe,
         FlotanteGenericoDirective,
         CallfunctionPipe,
+        CardComponent,
     ],
     templateUrl: './tabla-generica.component.html',
     styleUrl: './tabla-generica.component.scss',
