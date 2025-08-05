@@ -1,0 +1,9 @@
+:root {
+    --altoEncabezado: 0px;
+}
+
+@media (min-width: 1024px) {
+    .alto-cuerpo {
+        max-height: calc(87vh - var(--altoEncabezado));
+    }
+}

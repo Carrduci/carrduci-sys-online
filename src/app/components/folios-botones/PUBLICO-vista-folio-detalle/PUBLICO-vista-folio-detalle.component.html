@@ -1,19 +1,19 @@
-<ng-template
-    #TITULO_VISTA
->
-    <div class="d-flex flex-wrap p-3">
-        <div class="tw:pe-3 tw:w-[100%] tw:sm:w-[100%] tw:md:w-[100%] tw:lg:w-[20%] tw:xl:w-[20%]">
-            <div class="tw:hidden tw:hidden tw:sm:hidden tw:md:hidden tw:lg:block">
-                <csys-logo-carrduci-svg
-                    #logo0
-                    [height]="'150px'"
-                    [width]="'150px'"
-                ></csys-logo-carrduci-svg>
-            </div>
-        </div>
-        <div class="tw:w-[100%] tw:sm:w-[100%] tw:md:w-[100%] tw:lg:w-[50%] tw:xl:w-[50%]">
-            <div class="d-flex">
-                <!-- <div class="tw:me-4 tw:sm:me-4 tw:md:me-4 tw:md:me-4 tw:lg:me-0">
+<ng-template #TITULO_VISTA>
+  <div class="d-flex flex-wrap tw:p-1 tw:px-3 tw:md:p-3">
+    <div
+      class="tw:pe-3 tw:w-[100%] tw:sm:w-[100%] tw:md:w-[100%] tw:lg:w-[20%] tw:xl:w-[20%]"
+    >
+      <div class="tw:hidden tw:hidden tw:sm:hidden tw:md:hidden tw:lg:block">
+        <csys-logo-carrduci-svg
+          #logo0
+          [height]="'150px'"
+          [width]="'150px'"
+        ></csys-logo-carrduci-svg>
+      </div>
+    </div>
+    <div class="tw:w-[100%] tw:sm:w-[50%]">
+      <div class="d-flex">
+        <!-- <div class="tw:me-4 tw:sm:me-4 tw:md:me-4 tw:md:me-4 tw:lg:me-0">
                     <span class="tw:block tw:sm:block tw:md:block tw:md:block tw:lg:hidden">
                         <csys-logo-carrduci-svg
                             #logo1
@@ -22,70 +22,99 @@
                         ></csys-logo-carrduci-svg>
                     </span>
                 </div> -->
-                <h2>
-                    CARRDUCI - Cotización
-                </h2>
-            </div>
-            <div class="row">
-                <div class="col-12 d-flex">
-                    <div class="tw:text-yellow-500">FOLIO: </div>
-                    <div class="tw:text-yellow-500 tw:ps-3">{{ folio_vendedor()?.numeroDeFolio ?? 'N/A' }}</div>
-                </div>
-                <div class="col-12 d-flex">
-                    <div class="tw:text-yellow-500">CLIENTE: </div>
-                    <div class="tw:text-yellow-500 tw:ps-3">{{ folio_vendedor()?.cliente?.nombre ?? 'N/A' }}</div>
-                </div>
-                <div class="col-12 d-flex">
-                    <div>VENDEDOR: </div>
-                    <div class="tw:ps-3">{{ folio_vendedor()?.vendedor?.nombre ?? 'N/A' }}</div>
-                </div>
-                <div class="col-12 d-flex">
-                    <div class="tw:text-gray-400">FECHA: </div>
-                    <div class="tw:ps-3 tw:text-gray-400">{{ folio_vendedor()?.createdAt | date : "MMMM dd, yyyy 'a las' hh:mm aa" }}</div>
-                </div>
-            </div>
+        <span class="tw:text-md tw:sm:text-lg tw:md:text-xl tw:lg:text-3xl">
+          CARRDUCI - Cotización
+        </span>
+      </div>
+      <div class="row tw:text-sm tw:sm:text-md tw:md:text-lg tw:lg:text-xl">
+        <div class="col-12 d-flex">
+          <div class="tw:text-yellow-500">FOLIO:</div>
+          <div class="tw:text-yellow-500 tw:ps-3">
+            {{ folio_vendedor()?.numeroDeFolio ?? "N/A" }}
+          </div>
         </div>
-        <div class="tw:w-[100%] tw:sm:w-[100%] tw:md:w-[100%] tw:lg:w-[25%] tw:xl:w-[25%] text-center align-self-center mt-3">
-            @switch (!!folio_vendedor()?.autorizacionCliente) {
-                @case (true) {
-                    <div class="tw:hidden tw:hidden tw:sm:hidden tw:md:hidden tw:lg:block">
-                        <h1><span class="tw:text-green-500">Autorizado<i class="bi bi-check"></i></span></h1>
-                    </div>
-                    <div class="tw:block tw:sm:block tw:md:block tw:md:block tw:lg:hidden">
-                        <h5><span class="tw:text-green-500">Autorizado<i class="bi bi-check"></i></span></h5>
-                    </div>
-                }
-                @default {
-                    <div class="tw:hidden tw:hidden tw:sm:hidden tw:md:hidden tw:lg:block">
-                        <button
-                            class="btn btn-lg btn-warning"
-                            type="button"
-                            (click)="solicitar_confirmacion_aprobado()"
-                        >
-                            Autorizar
-                            <i class="bi bi-check"></i>
-                        </button>
-                    </div>
-                    <div class="tw:block tw:sm:block tw:md:block tw:md:block tw:lg:hidden">
-                        <button
-                            class="btn btn-sm btn-warning"
-                            type="button"
-                            (click)="solicitar_confirmacion_aprobado()"
-                        >
-                            Autorizar
-                            <i class="bi bi-check"></i>
-                        </button>
-                    </div>
-                }
-            }
+        <div class="col-12 d-flex">
+          <div class="tw:text-yellow-500">CLIENTE:</div>
+          <div class="tw:text-yellow-500 tw:ps-3">
+            {{ folio_vendedor()?.cliente?.nombre ?? "N/A" }}
+          </div>
         </div>
+        <div class="col-12 d-flex">
+          <div>VENDEDOR:</div>
+          <div class="tw:ps-3">
+            {{ folio_vendedor()?.vendedor?.nombre ?? "N/A" }}
+          </div>
+        </div>
+        <div class="col-12 d-flex">
+          <div class="tw:text-gray-400">FECHA:</div>
+          <div class="tw:ps-3 tw:text-gray-400">
+            {{
+              folio_vendedor()?.createdAt
+                | date: "MMMM dd, yyyy 'a las' hh:mm aa"
+            }}
+          </div>
+        </div>
+      </div>
     </div>
+    <div
+      class="tw:w-[100%] tw:sm:w-[25%] text-center align-self-center m-0 p-0"
+    >
+      @switch (!!folio_vendedor()?.autorizacionCliente) {
+        @case (true) {
+          <div
+            class="tw:hidden tw:hidden tw:sm:hidden tw:md:hidden tw:lg:block"
+          >
+            <h1>
+              <span class="tw:text-green-500"
+                >Autorizado<i class="bi bi-check"></i
+              ></span>
+            </h1>
+          </div>
+          <div
+            class="tw:block tw:sm:block tw:md:block tw:md:block tw:lg:hidden"
+          >
+            <h5>
+              <span class="tw:text-green-500"
+                >Autorizado<i class="bi bi-check"></i
+              ></span>
+            </h5>
+          </div>
+        }
+        @default {
+          <div
+            class="tw:hidden tw:hidden tw:sm:hidden tw:md:hidden tw:lg:block"
+          >
+            <button
+              class="btn btn-lg btn-warning"
+              type="button"
+              (click)="solicitar_confirmacion_aprobado()"
+            >
+              Autorizar
+              <i class="bi bi-check"></i>
+            </button>
+          </div>
+          <div
+            class="tw:block tw:sm:block tw:md:block tw:md:block tw:lg:hidden"
+          >
+            <button
+              class="btn btn-sm btn-warning"
+              type="button"
+              (click)="solicitar_confirmacion_aprobado()"
+            >
+              Autorizar
+              <i class="bi bi-check"></i>
+            </button>
+          </div>
+        }
+      }
+    </div>
+  </div>
 </ng-template>
 
 <app-tabla-generica
-    [datos_tabla]="datos_tabla_generica()"
-    [documentos]="folio_vendedor()?.folioLineas ?? []"
-    [track_field]="'modeloCompleto'"
-    (paginacion)="cambiar_ordenamiento($event)"
-    (click_fila)="accion_click_fila($event)"
+  [datos_tabla]="datos_tabla_generica()"
+  [documentos]="folio_vendedor()?.folioLineas ?? []"
+  [track_field]="'modeloCompleto'"
+  (paginacion)="cambiar_ordenamiento($event)"
+  (click_fila)="accion_click_fila($event)"
 ></app-tabla-generica>
