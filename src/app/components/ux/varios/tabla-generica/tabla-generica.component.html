@@ -2,19 +2,21 @@
 <!-- #region #MARK: ESTRUCTURA PRINCIPAL -->
 <!-----------------------------------------------------------\/------>
 
-@if (!!datos_tabla() && documentos.length > 0) { 
+@if (!!datos_tabla() && documentos.length > 0) {
     @if (datos_tabla().show_search_bar) {
         <div class="w-100 mb-2 p-2 bg-black rounded">BUSCADOR</div>
     }
     <div class="row mb-2">
         <div class="col-12 col-lg-7 overflow-etiquetas flex-nowrap">
-            @for (sorted_field of ordenes_columnas() | keyvalue; track
-            sorted_field.key) {
+            @for (
+                sorted_field of ordenes_columnas() | keyvalue;
+                track sorted_field.key
+            ) {
                 <span
                     class="badge me-1 mb-1 border-hover border-hover-light"
                     [ngClass]="{
                         'text-bg-warning': sorted_field.value.order === 1,
-                        'text-bg-light': sorted_field.value.order === -1
+                        'text-bg-light': sorted_field.value.order === -1,
                     }"
                     tabindex="0"
                     (click)="no_ordenar(sorted_field.key)"
@@ -22,14 +24,14 @@
                     bs-tooltip="
                             <div class='p-1'>
                                 Ordenado <strong class='{{
-                                    sorted_field.value.order === 1
-                                        ? 'text-warning'
-                                        : 'text-light'
-                                }}'>{{
-                                    sorted_field.value.order === 1
-                                        ? 'descendente'
-                                        : 'ascendente'
-                                }}</strong>
+                        sorted_field.value.order === 1
+                            ? 'text-warning'
+                            : 'text-light'
+                    }}'>{{
+                        sorted_field.value.order === 1
+                            ? 'descendente'
+                            : 'ascendente'
+                    }}</strong>
                                 <br>
                                 <span class='text-secondary-emphasis'>
                                     Click o enter para eliminar        
@@ -42,38 +44,49 @@
                     "
                 >
                     {{ sorted_field.value.title }}
-                    @switch (sorted_field.value.order) { @case (-1) {
-                    <span class="">
-                        <i class="bi bi-arrow-up"></i>
-                    </span>
-                    } @case (1) {
-                    <span class="">
-                        <i class="bi bi-arrow-down"></i>
-                    </span>
-                    } @default {
-                    <span class="">
-                        <i class="bi bi-arrow-right"></i>
-                    </span>
-                    } }
+                    @switch (sorted_field.value.order) {
+                        @case (-1) {
+                            <span class="">
+                                <i class="bi bi-arrow-up"></i>
+                            </span>
+                        }
+                        @case (1) {
+                            <span class="">
+                                <i class="bi bi-arrow-down"></i>
+                            </span>
+                        }
+                        @default {
+                            <span class="">
+                                <i class="bi bi-arrow-right"></i>
+                            </span>
+                        }
+                    }
                 </span>
             }
         </div>
-        @if(datos_tabla().show_layout_button || datos_tabla().show_pagination) {
+        @if (
+            datos_tabla().show_layout_button || datos_tabla().show_pagination
+        ) {
             <div class="col-12 col-lg-5 d-flex justify-content-end">
                 @if (datos_tabla().show_pagination) {
                     <div class="me-2">
                         <app-paginador-generico
                             [paginacion]="detallePaginacion()"
-                            (paginacion_modificada)="resultado_paginacion_paginador($event)"
+                            (paginacion_modificada)="
+                                resultado_paginacion_paginador($event)
+                            "
                         ></app-paginador-generico>
                     </div>
                 }
-                @if (modo_viewport() !== 'movil' && datos_tabla().show_layout_button) {
+                @if (
+                    modo_viewport() !== "movil" &&
+                    datos_tabla().show_layout_button
+                ) {
                     @switch (modo()) {
-                        @case ('tabla') {
+                        @case ("tabla") {
                             <button
                                 tabindex="0"
-                                type="button" 
+                                type="button"
                                 class="btn btn-sm btn-primary me-1"
                                 bs-tooltip="Mostrar como columnas"
                                 (click)="definir_modo('columnas')"
@@ -81,11 +94,11 @@
                                 <i class="bi bi-columns-gap"></i>
                             </button>
                         }
-                        @case ('columnas') {
+                        @case ("columnas") {
                             <div class="d-flex g-1">
-                                <button 
+                                <button
                                     tabindex="0"
-                                    type="button" 
+                                    type="button"
                                     class="btn btn-sm btn-primary me-1"
                                     bs-tooltip="Mostrar como tabla"
                                     (click)="definir_modo('tabla')"
@@ -100,11 +113,13 @@
         }
     </div>
     @switch (modo()) {
-        @case ('tabla') {
+        @case ("tabla") {
             <ng-container [ngTemplateOutlet]="modoTabla"></ng-container>
-        } @case ('columnas') {
+        }
+        @case ("columnas") {
             <ng-container [ngTemplateOutlet]="modoColumnas"></ng-container>
-        } @default {
+        }
+        @default {
             <ng-container [ngTemplateOutlet]="modoTabla"></ng-container>
         }
     }
@@ -113,19 +128,25 @@
             <div class="">
                 <app-paginador-generico
                     [paginacion]="detallePaginacion()"
-                    (paginacion_modificada)="resultado_paginacion_paginador($event)"
+                    (paginacion_modificada)="
+                        resultado_paginacion_paginador($event)
+                    "
                 ></app-paginador-generico>
             </div>
         </div>
     }
 }
-@if (!datos_tabla() || documentos.length === 0) { 
+@if (!datos_tabla() || documentos.length === 0) {
     @switch (modo()) {
-        @case ('tabla') {
+        @case ("tabla") {
             <ng-container [ngTemplateOutlet]="placeholder_tabla"></ng-container>
-        } @case ('columnas') {
-            <ng-container [ngTemplateOutlet]="placeholder_recuadros"></ng-container>
-        } @default {
+        }
+        @case ("columnas") {
+            <ng-container
+                [ngTemplateOutlet]="placeholder_recuadros"
+            ></ng-container>
+        }
+        @default {
             <ng-container [ngTemplateOutlet]="placeholder_tabla"></ng-container>
         }
     }
@@ -139,55 +160,51 @@
 <!-- #region #MARK: TEMPLATES -->
 <!-----------------------------------------------------------\/------>
 
-<ng-template
-    #placeholder_tabla
->
-    <table
-        class="table table-borderless table-hover caption-top"
-    >
-        <thead [ngClass]="{'sticky-top': !!datos_tabla().sticky_header}">
+<ng-template #placeholder_tabla>
+    <table class="table table-borderless table-hover caption-top">
+        <thead [ngClass]="{ 'sticky-top': !!datos_tabla().sticky_header }">
             <tr>
-                <th scope="col" class="bg-black">
-                    <div class="placeholder-glow m-0">
-                        <div class="placeholder col-12 rounded-5 tw:h-[30px]">
-                        </div>
-                    </div>
-                </th>
-                @for (item of [].constructor(3); track $index) {
+                @for (item of [].constructor(4); track $index) {
                     <th scope="col" class="bg-black">
                         <div class="placeholder-glow m-0">
-                            <div class="placeholder col-12 rounded-5 tw:h-[30px]">
-                            </div>
+                            <div
+                                class="placeholder col-{{
+                                    6 | random: 12
+                                }} rounded-5"
+                            ></div>
                         </div>
                     </th>
                 }
             </tr>
         </thead>
         <tbody>
-            @for (item of [].constructor(10); track $index) {
+            @for (item of [].constructor(20); track $index) {
                 <tr class="bg-transparent">
                     <td class="bg-transparent" colspan="3">
                         <div class="placeholder-glow">
-                            <div class="placeholder col-12 rounded-5">
-                            </div>
+                            <div
+                                class="placeholder col-{{
+                                    4 | random: 12
+                                }} rounded-5"
+                            ></div>
                         </div>
                     </td>
                     <td class="bg-transparent" colspan="1">
                         <div class="placeholder-glow">
-                            <div class="placeholder col-12 rounded-5">
-                            </div>
+                            <div
+                                class="placeholder col-{{
+                                    4 | random: 12
+                                }} rounded-5"
+                            ></div>
                         </div>
                     </td>
                 </tr>
             }
         </tbody>
-
     </table>
 </ng-template>
 
-<ng-template
-    #placeholder_recuadros
->
+<ng-template #placeholder_recuadros>
     @for (item of [].constructor(10); track $index) {
         <app-card
             [show_header]="false"
@@ -199,18 +216,28 @@
             <ng-container content_without_body>
                 <ul class="list-group list-group-flush">
                     @for (item of [].constructor(4); track $index) {
-                        <li class="list-group-item p-0 m-0 bg-transparent">
+                        <li
+                            class="list-group-item p-0 m-0 bg-transparent border-0"
+                        >
                             <div class="row p-0 m-0">
-                                <div class="col-6 tw:bg-black placeholder-glow">
-                                    <div class="placeholder col-12 rounded-5 mb-1">
-                                    </div>
+                                <div
+                                    class="col-6 tw:bg-black placeholder-glow text-end"
+                                >
+                                    <div
+                                        class="placeholder col-{{
+                                            4 | random: 12
+                                        }} rounded-5 mb-1"
+                                    ></div>
                                 </div>
                                 <div class="col-6 placeholder-glow">
-                                    <div class="placeholder col-{{$index + 2}} rounded-5 mb-1">
-                                    </div>                                    
+                                    <div
+                                        class="placeholder col-{{
+                                            4 | random: 12
+                                        }} rounded-5 mb-1"
+                                    ></div>
                                 </div>
                             </div>
-                        </li>                
+                        </li>
                     }
                 </ul>
             </ng-container>
@@ -221,13 +248,13 @@
 <ng-template #modoTabla>
     <table class="table table-borderless table-hover caption-top">
         @if (datos_tabla().table_title) {
-        <caption>
-            {{
-                datos_tabla().table_title
-            }}
-        </caption>
+            <caption>
+                {{
+                    datos_tabla().table_title
+                }}
+            </caption>
         }
-        <thead [ngClass]="{'sticky-top': !!datos_tabla().sticky_header}">
+        <thead [ngClass]="{ 'sticky-top': !!datos_tabla().sticky_header }">
             <tr>
                 @if (datos_tabla().show_index_column) {
                     <th scope="col" class="bg-black">
@@ -241,28 +268,42 @@
                         </button>
                     </th>
                 }
-                @for (columna of columnas_computed(); track columna.column_title) {
-                    @switch (!!datos_tabla().show_sorters && !!columna.content.field) {
+                @for (
+                    columna of columnas_computed();
+                    track columna.column_title
+                ) {
+                    @switch (
+                        !!datos_tabla().show_sorters && !!columna.content.field
+                    ) {
                         @case (true) {
-                            <td scope="col" class="bg-black text-{{columna.alignment}}" [attr.align]="columna.alignment">
+                            <td
+                                scope="col"
+                                class="bg-black text-{{ columna.alignment }}"
+                                [attr.align]="columna.alignment"
+                            >
                                 <button
                                     [id]="'_' + (columna.content.field ?? '')"
                                     type="menu"
                                     class="btn pt-0 pb-0 ps-1 pe-1 shadow-hover-lg rounded {{
-                                        !!ordenes_columnas()?.[columna.content.field ?? '']?.order
+                                        !!ordenes_columnas()?.[
+                                            columna.content.field ?? ''
+                                        ]?.order
                                             ? 'text-hover-dark'
                                             : ''
                                     }}"
                                     [ngClass]="{
                                         'border border-light-subtle bg-hover-light':
-                                            ordenes_columnas()?.[columna.content.field ?? '']
-                                                ?.order === -1,
+                                            ordenes_columnas()?.[
+                                                columna.content.field ?? ''
+                                            ]?.order === -1,
                                         'border border-warning-subtle bg-hover-warning':
-                                            ordenes_columnas()?.[columna.content.field ?? '']
-                                                ?.order === 1,
+                                            ordenes_columnas()?.[
+                                                columna.content.field ?? ''
+                                            ]?.order === 1,
                                         'bg-hover-primary text-hover-light':
-                                            !ordenes_columnas()?.[columna.content.field ?? '']
-                                                ?.order
+                                            !ordenes_columnas()?.[
+                                                columna.content.field ?? ''
+                                            ]?.order,
                                     }"
                                     flotante-generico
                                     [posicion]="'bottom'"
@@ -271,22 +312,28 @@
                                             columna.header_tooltip?.content
                                             | pipe_dinamico
                                                 : columna.header_tooltip?.pipe
-                                                : columna.header_tooltip?.pipe_args,
-                                        fieldColumna: columna.content.field ?? '',
-                                        tituloColumna: columna.column_title
+                                                : columna.header_tooltip
+                                                      ?.pipe_args,
+                                        fieldColumna:
+                                            columna.content.field ?? '',
+                                        tituloColumna: columna.column_title,
                                     }"
                                     [template]="opcionesDropdown"
                                     [clasesRecuadro]="
-                                        ordenes_columnas()?.[columna.content.field ?? '']
-                                            ?.order === -1
+                                        ordenes_columnas()?.[
+                                            columna.content.field ?? ''
+                                        ]?.order === -1
                                             ? 'border-hover-light'
-                                            : ordenes_columnas()?.[columna.content.field ?? '']
-                                                ?.order === 1
-                                            ? 'border-hover-warning'
-                                            : !ordenes_columnas()?.[columna.content.field ?? '']
-                                                ?.order
-                                            ? 'border-hover-primary'
-                                            : 'border-hover-primary'
+                                            : ordenes_columnas()?.[
+                                                    columna.content.field ?? ''
+                                                ]?.order === 1
+                                              ? 'border-hover-warning'
+                                              : !ordenes_columnas()?.[
+                                                      columna.content.field ??
+                                                          ''
+                                                  ]?.order
+                                                ? 'border-hover-primary'
+                                                : 'border-hover-primary'
                                     "
                                     [tabIndex]="0"
                                     [mostrarConClick]="true"
@@ -297,37 +344,48 @@
                                     {{ columna.column_title }}
                                     <span
                                         class="pe-1 ps-1 {{
-                                            !!ordenes_columnas()?.[columna.content.field ?? '']
-                                                ?.order
+                                            !!ordenes_columnas()?.[
+                                                columna.content.field ?? ''
+                                            ]?.order
                                                 ? ' bg-black rounded'
                                                 : ''
                                         }}"
                                         [ngClass]="{
                                             'text-warning-emphasis':
-                                                ordenes_columnas()?.[columna.content.field ?? '']
-                                                    ?.order === 1,
+                                                ordenes_columnas()?.[
+                                                    columna.content.field ?? ''
+                                                ]?.order === 1,
                                             'text-light-emphasis':
-                                                ordenes_columnas()?.[columna.content.field ?? '']
-                                                    ?.order === -1
+                                                ordenes_columnas()?.[
+                                                    columna.content.field ?? ''
+                                                ]?.order === -1,
                                         }"
                                     >
-                                        @switch
-                                        (ordenes_columnas()?.[columna.content.field ?? '']?.order)
-                                        { @case (-1) {
-                                        <i class="bi bi-arrow-up"></i>
-                                        } @case (1) {
-                                        <i class="bi bi-arrow-down"></i>
-                                        } @default {
-                                        <i class="bi bi-arrow-right"></i>
-                                        } }
+                                        @switch (
+                                            ordenes_columnas()?.[
+                                                columna.content.field ?? ""
+                                            ]?.order
+                                        ) {
+                                            @case (-1) {
+                                                <i class="bi bi-arrow-up"></i>
+                                            }
+                                            @case (1) {
+                                                <i class="bi bi-arrow-down"></i>
+                                            }
+                                            @default {
+                                                <i
+                                                    class="bi bi-arrow-right"
+                                                ></i>
+                                            }
+                                        }
                                     </span>
                                 </button>
                             </td>
                         }
                         @case (false) {
-                            <td 
-                                scope="col" 
-                                class="bg-black text-{{columna.alignment}}"
+                            <td
+                                scope="col"
+                                class="bg-black text-{{ columna.alignment }}"
                                 [bs-tooltip]="
                                     columna.header_tooltip?.content
                                         | pipe_dinamico
@@ -339,56 +397,74 @@
                                 {{ columna.column_title }}
                             </td>
                         }
-                    }        
+                    }
                 }
             </tr>
         </thead>
         <tbody>
-            @for (doc_fila of documentos; track doc_fila[track_field]; let
-            indice = $index) {
-            <tr 
-                class="bg-transparent"
-                tabindex="0" 
-                (click)="emisor_click_fila.emit({
-                    row_index: indice,
-                    row_document: doc_fila
-                })"
-                (keydown.enter)="emisor_click_fila.emit({
-                    row_index: indice,
-                    row_document: doc_fila
-                })"
-            >
-                @if (datos_tabla().show_index_column) {
-                <th scope="row" class="bg-transparent">{{ indice + 1 }}</th>
-                } @for (columna of datos_tabla().columns; track columna.column_title)
-                {
-                    <td class="bg-transparent text-{{columna.alignment}}" [attr.align]="columna.alignment">{{
-                        (
-                            columna.content.callback
-                                ? (
-                                    (columna.content.callback | callfunction: doc_fila)
-                                    ?? columna.content.default_value
+            @for (
+                doc_fila of documentos;
+                track doc_fila[track_field];
+                let indice = $index
+            ) {
+                <tr
+                    class="bg-transparent"
+                    tabindex="0"
+                    (click)="
+                        emisor_click_fila.emit({
+                            row_index: indice,
+                            row_document: doc_fila,
+                        })
+                    "
+                    (keydown.enter)="
+                        emisor_click_fila.emit({
+                            row_index: indice,
+                            row_document: doc_fila,
+                        })
+                    "
+                >
+                    @if (datos_tabla().show_index_column) {
+                        <th scope="row" class="bg-transparent">
+                            {{ indice + 1 }}
+                        </th>
+                    }
+                    @for (
+                        columna of datos_tabla().columns;
+                        track columna.column_title
+                    ) {
+                        <td
+                            class="bg-transparent text-{{ columna.alignment }}"
+                            [attr.align]="columna.alignment"
+                        >
+                            {{
+                                (columna.content.callback
+                                    ? ((columna.content.callback
+                                          | callfunction: doc_fila) ??
+                                      columna.content.default_value)
+                                    : (doc_fila
+                                      | getfield
+                                          : columna.content.field ?? ""
+                                          : columna.content.default_value)
                                 )
-                                : (
-                                    doc_fila | getfield
-                                        : columna.content.field ?? ''
-                                        : columna.content.default_value 
-                                )
-                        )
-                        | pipe_dinamico
-                            : columna.content.pipe 
-                            : columna.content.pipe_args ?? [] 
-                    }}</td>
-                }
-            </tr>
+                                    | pipe_dinamico
+                                        : columna.content.pipe
+                                        : columna.content.pipe_args ?? []
+                            }}
+                        </td>
+                    }
+                </tr>
             }
         </tbody>
         @if (datos_tabla().footer) {
-            <tfoot [ngClass]="{'sticky-bottom bottom-0': datos_tabla().sticky_footer}">
+            <tfoot
+                [ngClass]="{
+                    'sticky-bottom bottom-0': datos_tabla().sticky_footer,
+                }"
+            >
                 @for (footer_row of datos_tabla().footer; track $index) {
                     <tr>
                         @for (footer_cell of footer_row.cells; track $index) {
-                            <td 
+                            <td
                                 class="bg-black {{ footer_cell.classes }}"
                                 [attr.colspan]="footer_cell.colspan"
                                 [attr.align]="footer_cell.alignment"
@@ -396,7 +472,11 @@
                                 @if (footer_cell.content) {
                                     {{ footer_cell.content }}
                                 } @else if (footer_cell.template) {
-                                    <ng-container [ngTemplateOutlet]="footer_cell.template"></ng-container>
+                                    <ng-container
+                                        [ngTemplateOutlet]="
+                                            footer_cell.template
+                                        "
+                                    ></ng-container>
                                 }
                             </td>
                         }
@@ -408,7 +488,11 @@
 </ng-template>
 
 <ng-template #modoColumnas>
-    @for (doc_fila of documentos; track doc_fila[track_field]; let indice = $index) {
+    @for (
+        doc_fila of documentos;
+        track doc_fila[track_field];
+        let indice = $index
+    ) {
         <app-card
             [show_header]="false"
             [show_footer]="false"
@@ -418,32 +502,35 @@
         >
             <ng-container content_without_body>
                 <ul class="list-group list-group-flush">
-                    @for (columna of datos_tabla().columns; track columna.column_title)
-                    {
-                        <li class="list-group-item p-0 m-0 bg-transparent">
+                    @for (
+                        columna of datos_tabla().columns;
+                        track columna.column_title
+                    ) {
+                        <li
+                            class="list-group-item p-0 m-0 bg-transparent border-0"
+                        >
                             <div class="row p-0 m-0">
-                                <div class="col-6 tw:bg-black">
+                                <div class="col-6 tw:bg-black text-end">
                                     <span class="font-bold h6">
                                         {{ columna.column_title }}
                                     </span>
                                 </div>
                                 <div class="col-6">
                                     {{
-                                        (
-                                            columna.content.callback
-                                                ? (
-                                                    (columna.content.callback | callfunction: doc_fila)
-                                                    ?? columna.content.default_value
-                                                )
-                                                : (
-                                                    doc_fila | getfield
-                                                        : columna.content.field ?? ''
-                                                        : columna.content.default_value 
-                                                )
+                                        (columna.content.callback
+                                            ? ((columna.content.callback
+                                                  | callfunction: doc_fila) ??
+                                              columna.content.default_value)
+                                            : (doc_fila
+                                              | getfield
+                                                  : columna.content.field ?? ""
+                                                  : columna.content
+                                                        .default_value)
                                         )
-                                        | pipe_dinamico
-                                            : columna.content.pipe 
-                                            : columna.content.pipe_args ?? [] 
+                                            | pipe_dinamico
+                                                : columna.content.pipe
+                                                : columna.content.pipe_args ??
+                                                      []
                                     }}
                                 </div>
                             </div>
@@ -464,17 +551,27 @@
             <ng-container content_without_body>
                 <ul class="list-group list-group-flush">
                     @for (footer_row of datos_tabla().footer; track $index) {
-                        <li class="list-group-item p-0 m-0 bg-black">
+                        <li class="list-group-item p-0 m-0 bg-black border-0">
                             <div class="row p-0 m-0">
-                                @for (footer_cell of footer_row.cells; track $index) {
-                                    <div class="col" class="{{ footer_cell.classes }}">
+                                @for (
+                                    footer_cell of footer_row.cells;
+                                    track $index
+                                ) {
+                                    <div
+                                        class="col"
+                                        class="{{ footer_cell.classes }}"
+                                    >
                                         @if (footer_cell.content) {
                                             {{ footer_cell.content }}
                                         } @else if (footer_cell.template) {
-                                            <ng-container [ngTemplateOutlet]="footer_cell.template"></ng-container>
+                                            <ng-container
+                                                [ngTemplateOutlet]="
+                                                    footer_cell.template
+                                                "
+                                            ></ng-container>
                                         }
                                     </div>
-                                }                                
+                                }
                             </div>
                         </li>
                     }
@@ -484,7 +581,8 @@
     }
 </ng-template>
 
-<ng-template #opcionesDropdown
+<ng-template
+    #opcionesDropdown
     let-tooltip="tooltip"
     let-fieldColumna="fieldColumna"
     let-tituloColumna="tituloColumna"
@@ -500,7 +598,7 @@
         class="d-flex w-100 justify-content-between dropdown-item border-hover border-hover-primary rounded text-truncate"
         [ngClass]="{
             'border border-primary-subtle':
-                !(ordenes_columnas()?.[fieldColumna]?.order)
+                !ordenes_columnas()?.[fieldColumna]?.order,
         }"
         (click)="no_ordenar(fieldColumna)"
         (keydown.enter)="no_ordenar(fieldColumna)"
@@ -515,7 +613,7 @@
         class="d-flex w-100 justify-content-between dropdown-item border-hover border-hover-light rounded text-truncate"
         [ngClass]="{
             'border border-light-subtle':
-                (ordenes_columnas()?.[fieldColumna]?.order) === -1
+                ordenes_columnas()?.[fieldColumna]?.order === -1,
         }"
         (click)="ordenar_ascendente(fieldColumna, tituloColumna)"
         (keydown.enter)="ordenar_ascendente(fieldColumna, tituloColumna)"
@@ -530,7 +628,7 @@
         class="d-flex w-100 justify-content-between dropdown-item border-hover border-hover-warning rounded text-truncate"
         [ngClass]="{
             'border border-warning-subtle':
-                (ordenes_columnas()?.[fieldColumna]?.order) === 1
+                ordenes_columnas()?.[fieldColumna]?.order === 1,
         }"
         (click)="ordenar_descendente(fieldColumna, tituloColumna)"
         (keydown.enter)="ordenar_descendente(fieldColumna, tituloColumna)"
@@ -545,4 +643,3 @@
 <!-----------------------------------------------------------/\------>
 <!-- #endregion TEMPLATES -->
 <!--===============================================================-->
-

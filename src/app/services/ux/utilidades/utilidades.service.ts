@@ -193,11 +193,11 @@ export const REGEX_VALIDACION_CORREO =
 // (o==================================================================o)
 
 @Injectable({
-  providedIn: 'root'
+    providedIn: 'root',
 })
 export class UtilidadesService {
-   constructor() {}
-   
+    constructor() {}
+
     crear_bsonobj_id_para_variable() {
         return '_' + new ObjectID().toHexString();
     }
@@ -312,8 +312,8 @@ export class UtilidadesService {
             reemplazoValorIndefinido?: any;
             valorError?: any;
             aplanarSubArreglos?: boolean;
-            noRecorrerArreglos?: true
-        }
+            noRecorrerArreglos?: true;
+        },
     ): any {
         if (!opciones) opciones = {};
         opciones.reemplazoValorIndefinido =
@@ -333,9 +333,9 @@ export class UtilidadesService {
                                 unSubObjeto,
                                 pasoRuta,
                                 ' ',
-                                opciones
+                                opciones,
                             );
-                        }
+                        },
                     );
                     if (!opciones.aplanarSubArreglos) {
                         objetoActual = objetoActualTemporal;
@@ -344,7 +344,7 @@ export class UtilidadesService {
                         objetoActualTemporal.forEach((objeto: any) => {
                             const esArreglo = this.revisar_tipo(
                                 objeto,
-                                'Array'
+                                'Array',
                             );
                             if (esArreglo) aplanado.push(...objeto);
                             else aplanado.push(objeto);
@@ -392,7 +392,7 @@ export class UtilidadesService {
 
     obtener_nivel_de_descendencia_entre_nodos_html(
         parent: HTMLElement,
-        child: HTMLElement
+        child: HTMLElement,
     ): number {
         let current = child;
         let level = 0;
@@ -443,7 +443,7 @@ export class UtilidadesService {
      */
     obtener_elementos_enfocables_html() {
         return Array.from(
-            document.querySelectorAll('[tabindex]')
+            document.querySelectorAll('[tabindex]'),
         ) as HTMLElement[];
     }
 
@@ -452,7 +452,7 @@ export class UtilidadesService {
         if (elementos_enfocables.length === 0)
             return { indice_actual: -1, elementos_enfocables };
         const indice_actual = elementos_enfocables.indexOf(
-            document.activeElement as HTMLElement
+            document.activeElement as HTMLElement,
         );
         return { indice_actual, elementos_enfocables };
     }
@@ -469,45 +469,47 @@ export class UtilidadesService {
         }
     }
 
-      range(from: number, to: number, step: number = 1) {
-        let formed_range = []
-        for (let i = from; i < to; i+=step) {
-            formed_range.push(i)
+    range(from: number, to: number, step: number = 1) {
+        let formed_range = [];
+        for (let i = from; i < to; i += step) {
+            formed_range.push(i);
         }
-        return formed_range
+        return formed_range;
     }
 
     obtenerNivelDeDescendenciaEntreNodosHTML(
-		parent: HTMLElement,
-		child: HTMLElement
-	): number {
-		let current = child
-		let level = 0
+        parent: HTMLElement,
+        child: HTMLElement,
+    ): number {
+        let current = child;
+        let level = 0;
 
-		while (current && current !== parent) {
-			current = current.parentElement as HTMLElement
-			// console.log('CURRENT: ', current)
-			level++
+        while (current && current !== parent) {
+            current = current.parentElement as HTMLElement;
+            // console.log('CURRENT: ', current)
+            level++;
 
-			if (!current) return -1
-		}
+            if (!current) return -1;
+        }
 
-		return level
-	}
+        return level;
+    }
 
-    sort_array<T>(array: T[], sort_spec?: {[type: string]: 1 | -1}, plain_sorting?: 1 | -1) {
-
+    sort_array<T>(
+        array: T[],
+        sort_spec?: { [type: string]: 1 | -1 },
+        plain_sorting?: 1 | -1,
+    ) {
         // Comparacion natural para cadenas de texto.
         function natural_compare(a: any, b: any) {
-
             // Esta expresion regular toma uno de dos casos
             // 1. Es un numero desde 0 hasta infinito
             // 2. Es cualquer cadena de texto que no sea un numero
-            // 
+            //
             // Esto ocasiona que al hacer match, se obtenga un
             // arreglo que separa la cadena en trozos de "no numeros"
             // y numeros, por ejemplo:
-            // 
+            //
             // "Hola cómo 2 estas - 23.23123" resulta en
             // ["Hola coómo ", "2", " estas - ", "23", ".", "23123"].
             const regex_nums_and_non_nums = /([0-9]+|[^0-9]+)/g;
@@ -521,11 +523,8 @@ export class UtilidadesService {
             // mas grande tenga que comparar su cadena contra algo
             // que no existe.
             for (
-                let i_partes = 0; 
-                i_partes < Math.min(
-                    partes_a.length, 
-                    partes_b.length
-                ); 
+                let i_partes = 0;
+                i_partes < Math.min(partes_a.length, partes_b.length);
                 i_partes++
             ) {
                 // Obtener el elemento correspondiente al indice
@@ -535,48 +534,42 @@ export class UtilidadesService {
 
                 // Este regex busca que la cadena comparada sea
                 // unicamente de numeros.
-                const regex_only_nums = /^[0-9]+$/
+                const regex_only_nums = /^[0-9]+$/;
 
                 // Si la parte actual a y b son numeros, restarlos.
                 if (
-                    regex_only_nums.test(parte_actual_a)
-                    && regex_only_nums.test(parte_actual_b)
+                    regex_only_nums.test(parte_actual_a) &&
+                    regex_only_nums.test(parte_actual_b)
                 ) {
-
                     // Obtener la diferencia.
-                    const diferencia_numerica = 
-                        parseInt(parte_actual_a) - 
-                        parseInt(parte_actual_b)
-                        
+                    const diferencia_numerica =
+                        parseInt(parte_actual_a) - parseInt(parte_actual_b);
+
                     // Si es diferente a 0, retornar esa diferencia.
-                    if (diferencia_numerica !== 0) 
-                        return diferencia_numerica
-                    
+                    if (diferencia_numerica !== 0) return diferencia_numerica;
                 } else {
-                    
-                    // Si uno o ambos NO son numeros, comparar 
+                    // Si uno o ambos NO son numeros, comparar
                     // lexicograficamente.
-                    const comparacion = parte_actual_a.localeCompare(parte_actual_b)
+                    const comparacion =
+                        parte_actual_a.localeCompare(parte_actual_b);
 
                     // Si la comparacion es diferente a 0, retornarla.
-                    if (comparacion !== 0)
-                        return comparacion
+                    if (comparacion !== 0) return comparacion;
                 }
-
             }
-            
+
             // Si nada de lo anterior retorna un valor, retornar la
             // diferencia entre los tamanos de los arreglos de partes
             // de la variable a y b. Este caso es util cuando hay dos
-            // cadenas iguales con numeros pero una de las dos tiene 
+            // cadenas iguales con numeros pero una de las dos tiene
             // algo extra agregado como:
             // 1. "a-1"
             // 2. "a-1.2"
             // Como ninguno de los casos de comparacion anteriores
             // va a retornar nada (pues ambos darian 0) este permite
-            // ordenar las cadenas por tamano (se espera que 
-            // "a-1" < "a-1.2"). 
-            return partes_a.length - partes_b.length
+            // ordenar las cadenas por tamano (se espera que
+            // "a-1" < "a-1.2").
+            return partes_a.length - partes_b.length;
         }
 
         function get_object_id_timestamp(id: string) {
@@ -585,23 +578,26 @@ export class UtilidadesService {
                 // La fecha del objectId esta en los primeros 8
                 // caracteres, asi que hay que obtenerlos.
                 id.substring(0, 8),
-                
+
                 // Esos 8 caracteres estan en hexadecimal por lo
                 // que se le pasa a la funcion "parseInt" un 16
                 // para indicar eso y que lo convierta a un numero
                 // en decimal.
-                16
-            )
+                16,
+            );
 
             // Como las fechas en javascript se manejan en
             // milisegundos, por si acaso, convertir el valor a estos.
-            const timestamp_miliseconds = timestamp_seconds * 1000
+            const timestamp_miliseconds = timestamp_seconds * 1000;
 
-            return timestamp_miliseconds
+            return timestamp_miliseconds;
         }
 
-        function sort_operations(value_a: any, value_b: any, order: 1 | -1): number | undefined {
-
+        function sort_operations(
+            value_a: any,
+            value_b: any,
+            order: 1 | -1,
+        ): number | undefined {
             // Si ambos so null, retornar indefinido para que donde
             // se llama esta sub-funcion no se retorne nada.
             if (value_a == null && value_b == null) return undefined;
@@ -617,15 +613,17 @@ export class UtilidadesService {
             if (value_b == null) return -order;
 
             const object_id_match_regex = /^[0-9a-fA-F]{24}$/;
-            
+
             // Ordenamiento de timestamp de objectId.
-            if ((typeof value_a === 'string' && value_a.match(object_id_match_regex))) {
-                
+            if (
+                typeof value_a === 'string' &&
+                value_a.match(object_id_match_regex)
+            ) {
                 // Restar los valores de los timestamps de cada id.
-                const comparacion = 
-                    get_object_id_timestamp(value_a) - 
+                const comparacion =
+                    get_object_id_timestamp(value_a) -
                     get_object_id_timestamp(value_b);
-                
+
                 // Se multiplica por el orden para que tenga la
                 // misma direccion (positivo es descendente y
                 // negativo ascendente).
@@ -633,8 +631,10 @@ export class UtilidadesService {
             }
 
             // Ordenamiento de cadenas de texto.
-            else if (typeof value_a === 'string' && typeof value_b === 'string') {
-
+            else if (
+                typeof value_a === 'string' &&
+                typeof value_b === 'string'
+            ) {
                 // Hacer la comparacion natural de cadenas.
                 const comparacion = natural_compare(value_a, value_b);
 
@@ -646,11 +646,10 @@ export class UtilidadesService {
 
             // Ordenamiento de fechas.
             else if (value_a instanceof Date && value_b instanceof Date) {
-                
                 // Con las fechas basta con restar el resultado de
                 // la funcion getTime() que convierte las fechas a
                 // milisegundos.
-                const comparacion = value_a.getTime() - value_b.getTime()
+                const comparacion = value_a.getTime() - value_b.getTime();
 
                 // Se multiplica por el orden para que tenga la
                 // misma direccion (positivo es descendente y
@@ -659,11 +658,13 @@ export class UtilidadesService {
             }
 
             // Ordenamiento de numeros.
-            else if (typeof value_a === 'number' && typeof value_b === 'number') {
-
+            else if (
+                typeof value_a === 'number' &&
+                typeof value_b === 'number'
+            ) {
                 // Los numeros solo hay que restarlos.
-                const comparacion = value_a - value_b
-                
+                const comparacion = value_a - value_b;
+
                 // Se multiplica por el orden para que tenga la
                 // misma direccion (positivo es descendente y
                 // negativo ascendente).
@@ -673,73 +674,87 @@ export class UtilidadesService {
             // Cualquier otro tipo se compara con comparacion natural
             // como si fuera cadena de texto.
             else {
-                const comparacion = natural_compare(String(value_a), String(value_b))
-                                
+                const comparacion = natural_compare(
+                    String(value_a),
+                    String(value_b),
+                );
+
                 // Se multiplica por el orden para que tenga la
                 // misma direccion (positivo es descendente y
                 // negativo ascendente).
                 if (comparacion !== 0) return comparacion * order;
             }
 
-            return undefined
+            return undefined;
         }
-        
+
         // Usar el metodo sort de los arreglos de javascript.
         return [...array].sort((objeto_a: T, objeto_b: T) => {
-
             // Si sort_spec existe, se espera que sea un arreglo de
             // objetos.
             if (sort_spec) {
-                for(const [field, order] of Object.entries(sort_spec)) {
-                    
+                for (const [field, order] of Object.entries(sort_spec)) {
                     // Obtener los campos de forma que se pueda especificar
                     // la ruta como "campo1.campo_tal...".
-                    const value_a = this.seleccionar_campo_cualquier_nivel_profundo(
-                        objeto_a, field, '.', {
-                            reemplazoValorIndefinido: '',
-                            valorError: '',
-                            aplanarSubArreglos: true
-                        }
-                    )
-                    const value_b = this.seleccionar_campo_cualquier_nivel_profundo(
-                        objeto_b, field, '.', {
-                            reemplazoValorIndefinido: '',
-                            valorError: '',
-                            aplanarSubArreglos: true
-                        }
-                    )
-                    
+                    const value_a =
+                        this.seleccionar_campo_cualquier_nivel_profundo(
+                            objeto_a,
+                            field,
+                            '.',
+                            {
+                                reemplazoValorIndefinido: '',
+                                valorError: '',
+                                aplanarSubArreglos: true,
+                            },
+                        );
+                    const value_b =
+                        this.seleccionar_campo_cualquier_nivel_profundo(
+                            objeto_b,
+                            field,
+                            '.',
+                            {
+                                reemplazoValorIndefinido: '',
+                                valorError: '',
+                                aplanarSubArreglos: true,
+                            },
+                        );
+
                     // Ejecutar las operaciones de sort.
-                    const sort_operation_result = 
-                        sort_operations(value_a, value_b, order)
+                    const sort_operation_result = sort_operations(
+                        value_a,
+                        value_b,
+                        order,
+                    );
                     if (sort_operation_result !== undefined) {
-                        return sort_operation_result
+                        return sort_operation_result;
                     }
                 }
 
-            // Si existe plain_sorting se espera que sea un arreglo de
-            // valores, por lo que se pasan directamente a la funcion
-            // sort_operations.
+                // Si existe plain_sorting se espera que sea un arreglo de
+                // valores, por lo que se pasan directamente a la funcion
+                // sort_operations.
             } else if (plain_sorting !== undefined && plain_sorting !== null) {
-                const sort_operation_result = 
-                    sort_operations(objeto_a, objeto_b, plain_sorting)
+                const sort_operation_result = sort_operations(
+                    objeto_a,
+                    objeto_b,
+                    plain_sorting,
+                );
                 if (sort_operation_result !== undefined) {
-                    return sort_operation_result
+                    return sort_operation_result;
                 }
             }
-            return 0
-        })
-        
+            return 0;
+        });
     }
-    
+
     convertir_paginacion_a_sort_spec(paginacion: Pagination) {
-        const sorting_fields = paginacion.sorting_fields
-        const sort_spec: {[type: string]: 1 | -1} = {}
+        const sorting_fields = paginacion.sorting_fields;
+        const sort_spec: { [type: string]: 1 | -1 } = {};
         if (sorting_fields) {
             for (const [field, sort_data] of Object.entries(sorting_fields)) {
-                sort_spec[field] = sort_data.order
+                sort_spec[field] = sort_data.order;
             }
         }
-        return sort_spec
+        return sort_spec;
     }
 }

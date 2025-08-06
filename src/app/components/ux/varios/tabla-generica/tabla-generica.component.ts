@@ -22,6 +22,7 @@ import { GetfieldPipe } from '../../../../pipes/getfield/getfield.pipe';
 import { FlotanteGenericoDirective } from '../../../../directives/utiles/varios/flotante-generico/flotante-generico.directive';
 import { CallfunctionPipe } from '../../../../pipes/callfunction/callfunction.pipe';
 import { CardComponent } from '../../card/card/card.component';
+import { RandomPipe } from '../../../../pipes/random/random.pipe';
 
 @Component({
     selector: 'app-tabla-generica',
@@ -34,6 +35,7 @@ import { CardComponent } from '../../card/card/card.component';
         FlotanteGenericoDirective,
         CallfunctionPipe,
         CardComponent,
+        RandomPipe,
     ],
     templateUrl: './tabla-generica.component.html',
     styleUrl: './tabla-generica.component.scss',
@@ -42,13 +44,15 @@ import { CardComponent } from '../../card/card/card.component';
 export class TablaGenericaComponent implements OnDestroy {
     constructor(
         private viewport: DeteccionViewportService,
-        private control_queries: ControlQueriesService
+        private control_queries: ControlQueriesService,
     ) {
         effect(() => {
             const QUERY_OBTENIDA =
                 this.control_queries.query_actual().pagination;
             if (QUERY_OBTENIDA) {
-                this.ordenes_columnas.update(() => QUERY_OBTENIDA.sorting_fields)
+                this.ordenes_columnas.update(
+                    () => QUERY_OBTENIDA.sorting_fields,
+                );
                 this.detallePaginacion.update((value) => QUERY_OBTENIDA);
             }
             this.emisor_paginacion.emit(QUERY_OBTENIDA);
@@ -84,7 +88,7 @@ export class TablaGenericaComponent implements OnDestroy {
         }
     }
     @Input('documentos') documentos: any[] = [];
-    @Input('track_field') track_field: string = '_id'
+    @Input('track_field') track_field: string = '_id';
     @Output('paginacion')
     emisor_paginacion: EventEmitter<Pagination> = new EventEmitter();
     @Output('click_fila')
@@ -95,8 +99,7 @@ export class TablaGenericaComponent implements OnDestroy {
 
     modo!: WritableSignal<'tabla' | 'columnas'>;
     modo_viewport!: WritableSignal<'movil' | 'escritorio'>;
-    ordenes_columnas: WritableSignal<Pagination['sorting_fields']> =
-        signal({});
+    ordenes_columnas: WritableSignal<Pagination['sorting_fields']> = signal({});
     // datos_tabla!: OPCIONES_TABLA_GENERICA
     detallePaginacion: WritableSignal<Pagination> = signal({
         from: 0,
@@ -220,11 +223,14 @@ export class TablaGenericaComponent implements OnDestroy {
     // (o==================================================================o)
     //   #region CLICK
     // (o-----------------------------------------------------------\/-----o)
-    
+
     emmit_click(index: number, document: any) {
-        this.emisor_click_fila.emit({row_index: index, row_document: document})
+        this.emisor_click_fila.emit({
+            row_index: index,
+            row_document: document,
+        });
     }
-    
+
     // (o-----------------------------------------------------------/\-----o)
     //   #endregion CLICK
     // (o==================================================================o)
@@ -254,7 +260,7 @@ export interface CONTENIDO_TABLA_GENERICA<OBJETO> {
     callback?: (objeto: OBJETO) => any;
     pipe?: Pipe;
     pipe_args?: any[];
-    field?: DeepKeys<OBJETO>
+    field?: DeepKeys<OBJETO>;
     tooltip?: TOOLTIP_TABLA_GENERICA<OBJETO>;
     default_value?: any;
 }
@@ -265,15 +271,15 @@ export interface OPCIONES_FILA_TABLA_GENERICA<OBJETO> {
 }
 
 export interface CELDA_PIE_TABLA_GENERICA<OBJETO> {
-    colspan?: number,
-    content?: any,
-    template?: TemplateRef<any>
-    alignment?: 'center' | 'left' | 'right'
-    classes?: string,
+    colspan?: number;
+    content?: any;
+    template?: TemplateRef<any>;
+    alignment?: 'center' | 'left' | 'right';
+    classes?: string;
 }
 
 export interface FILA_PIE_TABLA_GENERICA<OBJETO> {
-    cells: CELDA_PIE_TABLA_GENERICA<OBJETO>[];    
+    cells: CELDA_PIE_TABLA_GENERICA<OBJETO>[];
 }
 
 export interface OPCIONES_TABLA_GENERICA<OBJETO> {
@@ -292,6 +298,6 @@ export interface OPCIONES_TABLA_GENERICA<OBJETO> {
     show_sorters?: boolean;
     sticky_header?: boolean;
     sticky_footer?: boolean;
-    footer?: FILA_PIE_TABLA_GENERICA<OBJETO>[]
+    footer?: FILA_PIE_TABLA_GENERICA<OBJETO>[];
     columns: COLUMNA_TABLA_GENERICA<OBJETO>[];
 }
