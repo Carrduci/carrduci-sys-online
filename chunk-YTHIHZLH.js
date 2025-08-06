@@ -1,1 +1,0 @@
-import"./chunk-I4MTPUBM.js";var t=[{path:"",loadComponent:()=>import("./chunk-BLP6K5AU.js").then(o=>o.LayoutPublicoComponent),providers:[],children:[{path:"cotizaciones",loadComponent:()=>import("./chunk-6HH6BNPX.js").then(o=>o.VistaFolioDetalleComponent)}]}];export{t as routes};
