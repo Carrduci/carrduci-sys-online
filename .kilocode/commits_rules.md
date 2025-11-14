@@ -5,4 +5,4 @@
 
 ## Commits Automáticos
 - `chore: actualizar reglas de Kilo Code automáticamente`
-- Autor: CSYS-BOT
+- Autor: CSYS-BOT <sistemas.ti@carrduci.com>
